@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kasir Swalayan Matematika</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#1e3a8a',
+                            gold: '#f59e0b',
+                            accent: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        game: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom UI transitions & animation Keyframes */
+        @keyframes laserScan {
+            0% { opacity: 0.3; transform: translateY(-2px); }
+            50% { opacity: 1; transform: translateY(2px); }
+            100% { opacity: 0.3; transform: translateY(-2px); }
+        }
+        .laser-active {
+            animation: laserScan 0.6s infinite ease-in-out;
+        }
+        .conveyor-belt {
+            background: repeating-linear-gradient(
+                90deg,
+                #1e293b,
+                #1e293b 12px,
+                #0f172a 12px,
+                #0f172a 24px
+            );
+        }
+        .numpad-btn:active, .money-btn:active {
+            transform: scale(0.95);
+        }
+        /* Custom Touch Optimization */
+        button, a {
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-game h-screen max-h-[100dvh] w-full flex flex-col justify-between overflow-hidden select-none">
+
+    <!-- HEADER BAR: Level, People, Mistakes, Score & Timer -->
+    <header class="bg-slate-900 border-b border-slate-800 px-2 py-1 shrink-0 z-30 shadow-md">
+        <div class="max-w-xl mx-auto flex items-center justify-between gap-1 text-xs">
+            <!-- Home Button -->
+            <a href="../Projek_mama/index.html" class="flex items-center space-x-1 bg-slate-800 hover:bg-slate-700 border border-slate-600 px-2 py-0.5 rounded-lg text-slate-200 transition font-bold text-[11px] sm:text-xs shadow">
+                <span>🏠</span>
+                <span>Beranda</span>
+            </a>
+
+            <!-- Brand Badge -->
+            <div class="flex items-center space-x-1 bg-blue-950 border border-blue-700/80 px-2 py-0.5 rounded-lg shadow-inner">
+                <span class="text-sm">🛒</span>
+                <span class="font-extrabold text-blue-300 tracking-wide text-[11px] sm:text-xs">SWALAYAN</span>
+            </div>
+
+            <!-- Level Badge -->
+            <div class="bg-amber-500/20 border border-amber-500/50 px-2 py-0.5 rounded flex flex-col items-center">
+                <span class="text-[9px] text-amber-400 font-bold uppercase leading-none">LEVEL</span>
+                <span id="level-display" class="font-black text-amber-300 text-xs sm:text-sm leading-none mt-0.5">1/5</span>
+            </div>
+
+            <!-- Customer Count -->
+            <div class="bg-emerald-500/20 border border-emerald-500/50 px-2 py-0.5 rounded flex flex-col items-center">
+                <span class="text-[9px] text-emerald-400 font-bold uppercase leading-none">ORANG</span>
+                <span id="customer-count-display" class="font-black text-emerald-300 text-xs sm:text-sm leading-none mt-0.5">1/10</span>
+            </div>
+
+            <!-- Mistakes counter -->
+            <div class="bg-rose-500/20 border border-rose-500/50 px-2 py-0.5 rounded flex flex-col items-center">
+                <span class="text-[9px] text-rose-400 font-bold uppercase leading-none">SALAH</span>
+                <span id="mistakes-display" class="font-black text-rose-300 text-xs sm:text-sm leading-none mt-0.5">0/3</span>
+            </div>
+
+            <!-- Score Display -->
+            <div class="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded flex flex-col items-end min-w-[55px]">
+                <span class="text-[9px] text-slate-400 font-bold uppercase leading-none">SKOR</span>
+                <span id="score-display" class="font-black text-yellow-400 text-xs sm:text-sm leading-none mt-0.5">0</span>
+            </div>
+        </div>
+
+        <!-- 30-Second Countdown Timer Bar -->
+        <div class="mt-1 w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800 relative">
+            <div id="timer-bar" class="bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 h-full w-full transition-all duration-100 ease-linear rounded-full"></div>
+            <span id="timer-text" class="absolute inset-0 flex items-center justify-center text-[9px] font-black text-white drop-shadow leading-none">⏱️ 30s</span>
+        </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE STOREFRONT DISPLAY -->
+    <main class="relative flex-1 flex flex-col justify-end bg-gradient-to-b from-sky-400 via-sky-200 to-amber-100 overflow-hidden min-h-0 border-b-2 border-slate-800">
+        <!-- Background Store Props -->
+        <div class="absolute inset-0 flex justify-between px-4 pt-1 pointer-events-none opacity-40">
+            <div class="bg-sky-600/30 text-sky-900 border border-sky-400/50 rounded-lg px-2 py-1 text-[9px] font-bold h-fit">🧃 Makanan & Minuman</div>
+            <div class="bg-sky-600/30 text-sky-900 border border-sky-400/50 rounded-lg px-2 py-1 text-[9px] font-bold h-fit">🧼 Kebutuhan Harian</div>
+        </div>
+
+        <!-- Characters & Conveyor Belt Container -->
+        <div class="relative w-full max-w-xl mx-auto flex items-end justify-between px-2 pb-1 z-10 shrink-0">
+            
+            <!-- CASHIER AVATAR -->
+            <div class="relative flex flex-col items-center w-1/4 max-w-[75px] sm:max-w-[95px]">
+                <div id="cashier-bubble" class="absolute -top-5 bg-blue-600 text-white border border-blue-300 rounded-lg px-1.5 py-0.5 shadow font-bold text-[8px] sm:text-[9px] whitespace-nowrap z-20 animate-bounce">
+                    Mari hitung! 😊
+                </div>
+                <div id="cashier-character" class="w-12 h-16 sm:w-16 sm:h-24 filter drop-shadow-md flex items-end">
+                    <!-- Cashier SVG Avatar -->
+                    <svg viewBox="0 0 300 450" class="w-full h-full drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="c_skin" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#FFDFC4"/><stop offset="100%" stop-color="#F0B796"/>
+                            </linearGradient>
+                            <linearGradient id="c_hair" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#3D2314"/><stop offset="100%" stop-color="#1A0D07"/>
+                            </linearGradient>
+                            <linearGradient id="c_shirt" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/>
+                            </linearGradient>
+                            <linearGradient id="c_apron" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#1E3A8A"/><stop offset="100%" stop-color="#0F172A"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M 90 120 Q 70 200 80 280 Q 150 320 220 280 Q 230 200 210 120 Z" fill="url(#c_hair)"/>
+                        <ellipse cx="230" cy="220" rx="35" ry="50" fill="url(#c_hair)"/>
+                        <rect x="135" y="180" width="30" height="40" rx="10" fill="url(#c_skin)"/>
+                        <ellipse cx="150" cy="130" rx="65" ry="70" fill="url(#c_skin)"/>
+                        <circle cx="85" cy="135" r="14" fill="url(#c_skin)"/>
+                        <circle cx="215" cy="135" r="14" fill="url(#c_skin)"/>
+                        <path d="M 85 120 C 85 50, 215 50, 215 120 C 190 80, 160 85, 150 100 C 140 85, 110 80, 85 120 Z" fill="url(#c_hair)"/>
+                        <ellipse cx="120" cy="135" rx="14" ry="18" fill="#FFFFFF"/>
+                        <ellipse cx="180" cy="135" rx="14" ry="18" fill="#FFFFFF"/>
+                        <ellipse cx="122" cy="136" rx="9" ry="13" fill="#4B2810"/>
+                        <ellipse cx="178" cy="136" rx="9" ry="13" fill="#4B2810"/>
+                        <circle cx="118" cy="130" r="4" fill="#FFFFFF"/>
+                        <circle cx="174" cy="130" r="4" fill="#FFFFFF"/>
+                        <path d="M 132 158 Q 150 175 168 158" stroke="#C54B4B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="102" cy="148" rx="10" ry="6" fill="#FF8A8A" opacity="0.4"/>
+                        <ellipse cx="198" cy="148" rx="10" ry="6" fill="#FF8A8A" opacity="0.4"/>
+                        <path d="M 90 210 L 210 210 L 235 320 L 65 320 Z" fill="url(#c_shirt)"/>
+                        <polygon points="120,210 150,240 135,210" fill="#FACC15"/>
+                        <polygon points="180,210 150,240 165,210" fill="#FACC15"/>
+                        <path d="M 105 230 L 195 230 L 210 450 L 90 450 Z" fill="url(#c_apron)"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- CONVEYOR BELT (CENTER ITEMS) -->
+            <div class="flex-1 mx-1 flex flex-col items-center justify-end">
+                <div id="scanner-laser" class="w-full h-0.5 bg-red-500 shadow-[0_0_8px_#ef4444] rounded opacity-0 transition-opacity duration-200 mb-0.5"></div>
+                <div class="w-full bg-slate-800 rounded-t-lg p-1 border-t-2 border-slate-600 shadow-xl">
+                    <div id="conveyor-belt" class="conveyor-belt h-14 sm:h-16 rounded flex items-center justify-center px-1 overflow-x-auto border border-slate-950">
+                        <div id="items-on-belt" class="flex space-x-1.5 items-center justify-center w-full">
+                            <!-- Items injected dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUSTOMER AVATAR -->
+            <div class="relative flex items-end justify-end w-1/4 max-w-[75px] sm:max-w-[95px]">
+                <div id="customer-container" class="w-12 h-16 sm:w-16 sm:h-24 flex items-end justify-center transition-all duration-300">
+                    <!-- Customer SVG Avatar injected dynamically -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- BOTTOM POS MONITOR & CONTROL TERMINAL -->
+    <div class="bg-slate-900 border-t-2 border-blue-600 p-1.5 sm:p-2 shadow-2xl z-20 shrink-0">
+        <div class="max-w-xl mx-auto flex flex-col gap-1.5 items-stretch">
+            
+            <!-- POS DISPLAY SUMMARY MONITOR BOARD -->
+            <div class="bg-blue-950/95 border border-blue-500 rounded-md p-1.5 text-white font-mono shadow-inner">
+                <div class="text-[9px] sm:text-[10px] text-blue-300 font-bold border-b border-blue-800 pb-1 mb-1 flex justify-between items-center">
+                    <span>🖥️ POS MONITOR</span>
+                    <span id="pos-mode-indicator" class="bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded font-sans text-[9px] sm:text-[10px] font-black uppercase tracking-wide">TAHAP 1: TOTAL</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-1 text-[10px] sm:text-xs">
+                    <div class="flex justify-between items-center bg-blue-900/60 px-2 py-1 rounded border border-blue-800/80">
+                        <span class="text-blue-200">Dibayar:</span>
+                        <span id="pos-cash-paid" class="text-emerald-400 font-bold">Rp 0</span>
+                    </div>
+                    
+                    <div id="pos-discount-row" class="hidden flex justify-between items-center bg-rose-950/90 px-2 py-1 rounded border border-rose-600 text-rose-300">
+                        <span class="font-bold text-[9px]">🏷️ Diskon:</span>
+                        <span id="pos-discount-val" class="font-bold text-rose-300">-Rp 0</span>
+                    </div>
+
+                    <div class="flex justify-between items-center bg-blue-900/60 px-2 py-1 rounded border border-blue-800/80">
+                        <span class="text-blue-200">Total:</span>
+                        <span id="pos-total-cost" class="text-yellow-300 font-bold">Rp ?</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center bg-blue-900/60 px-2 py-1 rounded border border-blue-800/80">
+                        <span class="text-blue-200">Kembali:</span>
+                        <span id="pos-change-needed" class="text-cyan-300 font-bold">❓ Hitung Sendiri</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAHAP 1 INPUT: TOTAL BELANJA NUMPAD -->
+            <div id="panel-step1-total" class="bg-slate-800 p-1.5 rounded-md border border-slate-700 flex flex-col justify-between">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs text-amber-300 font-bold">🧮 1. Masukkan Total Belanja:</span>
+                    <div class="flex space-x-1">
+                        <button onclick="backspaceTotalNum()" class="text-[10px] bg-slate-700 hover:bg-slate-600 text-amber-300 font-bold px-2 py-0.5 rounded shadow">⌫ Hapus</button>
+                        <button onclick="clearTotalInput()" class="text-[10px] bg-rose-600 hover:bg-rose-500 text-white font-bold px-2 py-0.5 rounded shadow">Reset</button>
+                    </div>
+                </div>
+
+                <div class="flex space-x-1.5 mb-1.5">
+                    <div class="relative flex-1">
+                        <span class="absolute left-2.5 top-1.5 text-slate-400 font-bold text-sm">Rp</span>
+                        <input type="text" id="input-total-val" readonly inputmode="none" placeholder="0" class="w-full bg-slate-950 border border-amber-400 rounded py-1 pl-9 pr-2 text-yellow-300 font-bold text-base focus:outline-none">
+                    </div>
+                    <button id="btn-submit-total" onclick="submitTotalCost()" class="numpad-btn bg-amber-500 hover:bg-amber-400 text-slate-950 font-game px-3 py-1 rounded border-b-2 border-amber-700 font-bold text-xs sm:text-sm shadow flex items-center justify-center">
+                        PROSES ➔
+                    </button>
+                </div>
+
+                <!-- Touch-Optimized 4-Column Numpad Grid -->
+                <div class="grid grid-cols-4 gap-1">
+                    <button onclick="appendTotalNum('1')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">1</button>
+                    <button onclick="appendTotalNum('2')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">2</button>
+                    <button onclick="appendTotalNum('3')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">3</button>
+                    <button onclick="backspaceTotalNum()" class="numpad-btn h-9 sm:h-8 bg-amber-600/80 hover:bg-amber-500 text-amber-100 font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">⌫</button>
+
+                    <button onclick="appendTotalNum('4')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">4</button>
+                    <button onclick="appendTotalNum('5')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">5</button>
+                    <button onclick="appendTotalNum('6')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">6</button>
+                    <button onclick="appendTotalNum('000')" class="numpad-btn h-9 sm:h-8 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded text-xs sm:text-sm shadow flex items-center justify-center">000</button>
+
+                    <button onclick="appendTotalNum('7')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">7</button>
+                    <button onclick="appendTotalNum('8')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">8</button>
+                    <button onclick="appendTotalNum('9')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">9</button>
+                    <button onclick="appendTotalNum('0')" class="numpad-btn h-9 sm:h-8 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-sm sm:text-base shadow flex items-center justify-center">0</button>
+                </div>
+            </div>
+
+            <!-- TAHAP 2 INPUT: UANG PENGEMBALIAN DENOMINATIONS -->
+            <div id="panel-step2-change" class="hidden bg-blue-900/90 p-1.5 rounded-md border border-blue-500 flex-col justify-between shadow-xl">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs text-cyan-300 font-bold uppercase tracking-wider">💵 2. Pilih Pecahan Kembalian:</span>
+                    <button onclick="resetChangeGiven()" class="text-[10px] bg-rose-600 hover:bg-rose-500 text-white font-bold px-2 py-0.5 rounded shadow">Reset</button>
+                </div>
+
+                <!-- 10 Denomination Buttons Grid (Coins & Color-Coded Notes) -->
+                <div class="grid grid-cols-5 gap-1 my-1">
+                    <button onclick="addChangeMoney(100)" class="money-btn h-9 sm:h-8 bg-slate-300 hover:bg-white text-slate-900 font-game rounded text-xs border border-slate-400 shadow flex items-center justify-center space-x-0.5">
+                        <span>🪙</span> <span class="font-bold">100</span>
+                    </button>
+                    <button onclick="addChangeMoney(200)" class="money-btn h-9 sm:h-8 bg-slate-300 hover:bg-white text-slate-900 font-game rounded text-xs border border-slate-400 shadow flex items-center justify-center space-x-0.5">
+                        <span>🪙</span> <span class="font-bold">200</span>
+                    </button>
+                    <button onclick="addChangeMoney(500)" class="money-btn h-9 sm:h-8 bg-amber-400 hover:bg-amber-300 text-slate-950 font-game rounded text-xs border border-amber-200 shadow flex items-center justify-center space-x-0.5">
+                        <span>🪙</span> <span class="font-bold">500</span>
+                    </button>
+                    <button onclick="addChangeMoney(1000)" class="money-btn h-9 sm:h-8 bg-emerald-700 hover:bg-emerald-600 border border-emerald-400 text-emerald-100 font-game rounded text-xs shadow flex items-center justify-center space-x-0.5">
+                        <span>💵</span> <span class="font-bold">1k</span>
+                    </button>
+                    <button onclick="addChangeMoney(2000)" class="money-btn h-9 sm:h-8 bg-slate-500 hover:bg-slate-400 border border-slate-300 text-white font-game rounded text-xs shadow flex items-center justify-center space-x-0.5">
+                        <span>💵</span> <span class="font-bold">2k</span>
+                    </button>
+
+                    <button onclick="addChangeMoney(5000)" class="money-btn h-9 sm:h-8 bg-amber-700 hover:bg-amber-600 border border-amber-400 text-amber-100 font-game rounded text-xs shadow flex items-center justify-center space-x-0.5">
+                        <span>💵</span> <span class="font-bold">5k</span>
+                    </button>
+                    <button onclick="addChangeMoney(10000)" class="money-btn h-9 sm:h-8 bg-purple-700 hover:bg-purple-600 border border-purple-300 text-purple-100 font-game rounded text-xs shadow flex items-center justify-center space-x-0.5">
+                        <span>💵</span> <span class="font-bold">10k</span>
+                    </button>
+                    <button onclick="addChangeMoney(20000)" class="money-btn h-9 sm:h-8 bg-teal-600 hover:bg-teal-500 border border-teal-300 text-teal-100 font-game rounded text-xs shadow flex items-center justify-center space-x-0.5">
+                        <span>💵</span> <span class="font-bold">20k</span>
+                    </button>
+                    <button onclick="addChangeMoney(50000)" class="money-btn h-9 sm:h-8 bg-blue-600 hover:bg-blue-500 border border-blue-300 text-white font-game rounded text-xs shadow flex items-center justify-center space-x-0.5">
+                        <span>💵</span> <span class="font-bold">50k</span>
+                    </button>
+                    <button onclick="addChangeMoney(100000)" class="money-btn h-9 sm:h-8 bg-rose-600 hover:bg-rose-500 border border-rose-300 text-white font-game rounded text-xs shadow flex items-center justify-center space-x-0.5">
+                        <span>💵</span> <span class="font-bold">100k</span>
+                    </button>
+                </div>
+
+                <!-- Display Total Given & OK Button -->
+                <div class="flex items-center space-x-1.5 mt-1">
+                    <div class="flex-1 bg-slate-950 px-2 py-1 rounded border border-cyan-400 text-xs flex justify-between items-center">
+                        <span class="text-slate-400 text-[10px]">Keluar:</span>
+                        <span id="given-change-val" class="font-bold text-cyan-300 text-sm">Rp 0</span>
+                    </div>
+                    <button id="btn-submit-change" onclick="submitChangeGiven()" class="money-btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-game px-3.5 py-1 rounded border-b-2 border-emerald-700 font-extrabold text-xs sm:text-sm shadow flex items-center justify-center">
+                        OK / BERI ➔
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MATH EVALUATION MODAL (PEMBAHASAN KESALAHAN) -->
+    <div id="modal-explanation" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-slate-900 border-2 border-rose-500 rounded-xl max-w-sm w-full p-4 shadow-2xl text-slate-100 flex flex-col gap-3">
+            <div class="flex items-center space-x-2 text-rose-400 border-b border-slate-800 pb-2">
+                <span class="text-2xl">❌</span>
+                <h3 class="font-bold text-base">Jawaban Kurang Tepat!</h3>
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <p id="eval-reason" class="text-rose-300 font-semibold"></p>
+                <div class="bg-slate-950 p-2.5 rounded border border-slate-800 space-y-1.5 font-mono">
+                    <div id="eval-items-list" class="text-amber-300"></div>
+                    <div id="eval-discount-info" class="text-rose-400"></div>
+                    <div id="eval-correct-total" class="text-emerald-400 font-bold border-t border-slate-800 pt-1"></div>
+                    <div id="eval-correct-change" class="text-cyan-300 font-bold"></div>
+                </div>
+            </div>
+
+            <button onclick="closeExplanationModal()" class="w-full py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg shadow-lg text-xs tracking-wider uppercase transition">
+                Lanjut Ke Pelanggan Berikutnya ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- LEVEL COMPLETED / GAME OVER MODAL -->
+    <div id="modal-gameover" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-slate-900 border-2 border-amber-400 rounded-xl max-w-sm w-full p-5 text-center shadow-2xl space-y-4">
+            <div id="gameover-icon" class="text-4xl">🏆</div>
+            <h2 id="gameover-title" class="text-xl font-black text-amber-400">LEVEL SELESAI!</h2>
+            <p id="gameover-desc" class="text-xs text-slate-300 leading-relaxed"></p>
+            
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs flex justify-around">
+                <div>
+                    <span class="text-slate-400 block text-[10px]">TOTAL SKOR</span>
+                    <span id="final-score" class="text-base font-bold text-yellow-400">0</span>
+                </div>
+                <div>
+                    <span class="text-slate-400 block text-[10px]">LEVEL</span>
+                    <span id="final-level" class="text-base font-bold text-amber-300">1</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <button id="btn-next-level" onclick="restartOrNextLevel()" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-lg text-xs uppercase tracking-wider shadow-lg">
+                    MAIN LAGI ➔
+                </button>
+                <a href="../Projek_mama/index.html" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs uppercase tracking-wider border border-slate-700 text-center shadow">
+                    🏠 KEMBALI KE BERANDA
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Web Audio API Sound Effects Synthesizer
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playBeep(freq = 800, type = 'sine', duration = 0.1) {
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function playSound(name) {
+            try {
+                initAudio();
+                if (name === 'scan') {
+                    playBeep(1200, 'sine', 0.08);
+                } else if (name === 'click') {
+                    playBeep(400, 'triangle', 0.05);
+                } else if (name === 'coin') {
+                    playBeep(987.77, 'sine', 0.08);
+                    setTimeout(() => playBeep(1318.51, 'sine', 0.12), 60);
+                } else if (name === 'correct') {
+                    playBeep(523.25, 'sine', 0.1);
+                    setTimeout(() => playBeep(659.25, 'sine', 0.1), 100);
+                    setTimeout(() => playBeep(783.99, 'sine', 0.15), 200);
+                } else if (name === 'wrong') {
+                    playBeep(220, 'sawtooth', 0.2);
+                    setTimeout(() => playBeep(180, 'sawtooth', 0.25), 150);
+                } else if (name === 'tick') {
+                    playBeep(600, 'sine', 0.03);
+                }
+            } catch (e) {}
+        }
+
+        const ITEMS_DB = [
+            { name: "Permen Box", price: 1000, icon: "🍬" },
+            { name: "Ciki Snak", price: 2000, icon: "🍿" },
+            { name: "Roti Manis", price: 3000, icon: "🍞" },
+            { name: "Susu UHT", price: 5000, icon: "🥛" },
+            { name: "Air Mineral", price: 2500, icon: "🥤" },
+            { name: "Biskuit", price: 4000, icon: "🍪" },
+            { name: "Jus Buah", price: 6000, icon: "🧃" },
+            { name: "Cokelat", price: 4500, icon: "🍫" },
+            { name: "Es Krim", price: 3500, icon: "🍦" },
+            { name: "Mie Instan", price: 3000, icon: "🍜" },
+            { name: "Teh Botol", price: 4000, icon: "🍵" },
+            { name: "Kopi Cup", price: 5000, icon: "☕" }
+        ];
+
+        const CUSTOMERS = [
+            {
+                name: "Siswa Hoodie Hijau",
+                svg: `<svg viewBox="0 0 200 350" class="w-full h-full drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
+                        <defs><linearGradient id="p1_skin" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFDFC4"/><stop offset="100%" stop-color="#F0B796"/></linearGradient>
+                        <linearGradient id="p1_green" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#166534"/><stop offset="100%" stop-color="#14532D"/></linearGradient></defs>
+                        <circle cx="100" cy="45" r="28" fill="#1A0D07"/>
+                        <ellipse cx="100" cy="95" rx="40" ry="45" fill="url(#p1_skin)"/>
+                        <ellipse cx="80" cy="95" rx="6" ry="9" fill="#1A0D07"/><ellipse cx="120" cy="95" rx="6" ry="9" fill="#1A0D07"/>
+                        <circle cx="78" cy="92" r="2" fill="#FFF"/><circle cx="118" cy="92" r="2" fill="#FFF"/>
+                        <path d="M 85 115 Q 100 128 115 115" stroke="#991B1B" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <path d="M 50 140 L 150 140 L 165 310 L 35 310 Z" fill="url(#p1_green)"/>
+                      </svg>`
+            },
+            {
+                name: "Siswa Sweater Garis",
+                svg: `<svg viewBox="0 0 200 350" class="w-full h-full drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
+                        <defs><linearGradient id="p2_skin" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FCE3CE"/><stop offset="100%" stop-color="#E2A682"/></linearGradient>
+                        <linearGradient id="p2_yellow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CA8A04"/><stop offset="100%" stop-color="#854D0E"/></linearGradient></defs>
+                        <path d="M 60 40 Q 100 20 140 40 L 150 90 L 50 90 Z" fill="#451A03"/>
+                        <ellipse cx="100" cy="95" rx="38" ry="42" fill="url(#p2_skin)"/>
+                        <ellipse cx="82" cy="92" rx="6" ry="8" fill="#1A0D07"/><ellipse cx="118" cy="92" rx="6" ry="8" fill="#1A0D07"/>
+                        <path d="M 88 114 Q 100 122 112 114" stroke="#991B1B" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <path d="M 55 138 L 145 138 L 160 310 L 40 310 Z" fill="url(#p2_yellow)"/>
+                      </svg>`
+            },
+            {
+                name: "Siswa Hoodie Ungu",
+                svg: `<svg viewBox="0 0 200 350" class="w-full h-full drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
+                        <defs><linearGradient id="p3_skin" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFDFC4"/><stop offset="100%" stop-color="#F0B796"/></linearGradient>
+                        <linearGradient id="p3_purple" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#A855F7"/><stop offset="100%" stop-color="#7E22CE"/></linearGradient></defs>
+                        <circle cx="100" cy="42" r="28" fill="#2D1609"/>
+                        <ellipse cx="100" cy="92" rx="42" ry="46" fill="url(#p3_skin)"/>
+                        <ellipse cx="80" cy="96" rx="7" ry="10" fill="#2D1609"/><ellipse cx="120" cy="96" rx="7" ry="10" fill="#2D1609"/>
+                        <circle cx="78" cy="93" r="2.5" fill="#FFF"/><circle cx="118" cy="93" r="2.5" fill="#FFF"/>
+                        <path d="M 88 114 Q 100 126 112 114 Z" fill="#E11D48"/>
+                        <path d="M 55 138 L 145 138 L 160 310 L 40 310 Z" fill="url(#p3_purple)"/>
+                      </svg>`
+            }
+        ];
+
+        let currentLevel = 1;
+        let customerIndex = 1;
+        let mistakes = 0;
+        let score = 0;
+
+        let currentStage = 1; // 1: Input Total, 2: Input Change
+        let currentItems = [];
+        let itemSum = 0;
+        let discountVal = 0;
+        let targetTotal = 0;
+        let customerCashPaid = 0;
+        let targetChangeNeeded = 0;
+
+        let inputTotalString = "";
+        let givenChangeVal = 0;
+
+        let timerSeconds = 30;
+        let timerInterval = null;
+
+        function getLevelRules(level) {
+            switch(level) {
+                case 1: return { itemLimit: 2, discountPercent: 0 };
+                case 2: return { itemLimit: 3, discountPercent: 0 };
+                case 3: return { itemLimit: 4, discountPercent: 0 };
+                case 4: return { itemLimit: 2, discountPercent: 10 };
+                case 5: return { itemLimit: 3, discountPercent: 20 };
+                default: return { itemLimit: 2, discountPercent: 0 };
+            }
+        }
+
+        function initGame() {
+            currentLevel = 1;
+            customerIndex = 1;
+            mistakes = 0;
+            score = 0;
+            updateHeaderUI();
+            loadCustomer();
+        }
+
+        function loadCustomer() {
+            clearInterval(timerInterval);
+            currentStage = 1;
+            inputTotalString = "";
+            givenChangeVal = 0;
+
+            const rules = getLevelRules(currentLevel);
+            
+            // Generate random items
+            currentItems = [];
+            itemSum = 0;
+            const shuffledDB = [...ITEMS_DB].sort(() => 0.5 - Math.random());
+            for (let i = 0; i < rules.itemLimit; i++) {
+                currentItems.push(shuffledDB[i]);
+                itemSum += shuffledDB[i].price;
+            }
+
+            // Calculate Discount
+            if (rules.discountPercent > 0) {
+                discountVal = Math.round((itemSum * rules.discountPercent) / 100);
+            } else {
+                discountVal = 0;
+            }
+            targetTotal = itemSum - discountVal;
+
+            // Generate realistic customer cash paid
+            const possibleBills = [5000, 10000, 20000, 50000, 100000];
+            customerCashPaid = possibleBills.find(b => b >= targetTotal) || (Math.ceil(targetTotal / 10000) * 10000);
+            if (customerCashPaid === targetTotal) {
+                customerCashPaid += 5000;
+            }
+            targetChangeNeeded = customerCashPaid - targetTotal;
+
+            // Update UI components
+            renderConveyorItems();
+            renderCustomerAvatar();
+            updatePosMonitor();
+
+            // Toggle panels
+            document.getElementById('panel-step1-total').classList.remove('hidden');
+            document.getElementById('panel-step2-change').classList.add('hidden');
+            document.getElementById('panel-step2-change').classList.remove('flex');
+            document.getElementById('pos-mode-indicator').textContent = "TAHAP 1: TOTAL";
+            document.getElementById('pos-mode-indicator').className = "bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded font-sans text-[9px] sm:text-[10px] font-black uppercase tracking-wide";
+            
+            document.getElementById('input-total-val').value = "0";
+            document.getElementById('given-change-val').textContent = "Rp 0";
+
+            // Laser effect & start timer
+            triggerLaser();
+            startTimer();
+        }
+
+        function renderConveyorItems() {
+            const container = document.getElementById('items-on-belt');
+            container.innerHTML = "";
+            currentItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "item-card bg-slate-900 border border-slate-700 rounded p-1 flex flex-col items-center justify-center min-w-[55px] sm:min-w-[65px] shadow-md shrink-0";
+                card.innerHTML = `
+                    <span class="text-base sm:text-lg leading-none">${item.icon}</span>
+                    <span class="text-[8.5px] sm:text-[9.5px] text-slate-200 font-bold truncate max-w-[50px] sm:max-w-[60px] leading-tight my-0.5">${item.name}</span>
+                    <span class="text-[9px] sm:text-[10px] text-yellow-300 font-black bg-amber-950/90 px-1 py-0.5 rounded border border-amber-500/50 leading-none">Rp ${item.price.toLocaleString('id-ID')}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderCustomerAvatar() {
+            const cust = CUSTOMERS[(customerIndex - 1) % CUSTOMERS.length];
+            document.getElementById('customer-container').innerHTML = cust.svg;
+        }
+
+        function updatePosMonitor() {
+            document.getElementById('pos-cash-paid').textContent = `Rp ${customerCashPaid.toLocaleString('id-ID')}`;
+            document.getElementById('pos-total-cost').textContent = currentStage === 1 ? "Rp ?" : `Rp ${targetTotal.toLocaleString('id-ID')}`;
+            document.getElementById('pos-change-needed').textContent = "❓ Hitung Sendiri";
+
+            const discRow = document.getElementById('pos-discount-row');
+            if (discountVal > 0) {
+                discRow.classList.remove('hidden');
+                document.getElementById('pos-discount-val').textContent = `-Rp ${discountVal.toLocaleString('id-ID')}`;
+            } else {
+                discRow.classList.add('hidden');
+            }
+        }
+
+        function triggerLaser() {
+            playSound('scan');
+            const laser = document.getElementById('scanner-laser');
+            laser.classList.add('laser-active');
+            setTimeout(() => laser.classList.remove('laser-active'), 600);
+        }
+
+        function startTimer() {
+            timerSeconds = 30;
+            updateTimerUI();
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerUI();
+                if (timerSeconds <= 5 && timerSeconds > 0) {
+                    playSound('tick');
+                }
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const bar = document.getElementById('timer-bar');
+            const text = document.getElementById('timer-text');
+            const pct = Math.max(0, (timerSeconds / 30) * 100);
+            bar.style.width = `${pct}%`;
+            text.textContent = `⏱️ ${timerSeconds}s`;
+        }
+
+        function handleTimeOut() {
+            playSound('wrong');
+            mistakes++;
+            updateHeaderUI();
+            showExplanationModal("Waktu Habis! Kamu tidak menyelesaikan perhitungan dalam 30 detik.");
+        }
+
+        function appendTotalNum(digit) {
+            initAudio();
+            playSound('click');
+            if (inputTotalString.length > 7) return;
+            if (inputTotalString === "" && digit === "000") return;
+            inputTotalString += digit;
+            document.getElementById('input-total-val').value = parseInt(inputTotalString || 0, 10).toLocaleString('id-ID');
+        }
+
+        function backspaceTotalNum() {
+            playSound('click');
+            inputTotalString = inputTotalString.slice(0, -1);
+            document.getElementById('input-total-val').value = inputTotalString === "" ? "0" : parseInt(inputTotalString, 10).toLocaleString('id-ID');
+        }
+
+        function clearTotalInput() {
+            playSound('click');
+            inputTotalString = "";
+            document.getElementById('input-total-val').value = "0";
+        }
+
+        function submitTotalCost() {
+            initAudio();
+            const userEnteredTotal = parseInt(inputTotalString || 0, 10);
+            if (userEnteredTotal === targetTotal) {
+                playSound('correct');
+                currentStage = 2;
+                document.getElementById('panel-step1-total').classList.add('hidden');
+                document.getElementById('panel-step2-change').classList.remove('hidden');
+                document.getElementById('panel-step2-change').classList.add('flex');
+                document.getElementById('pos-mode-indicator').textContent = "TAHAP 2: KEMBALIAN";
+                document.getElementById('pos-mode-indicator').className = "bg-cyan-400 text-slate-950 px-1.5 py-0.5 rounded font-sans text-[9px] sm:text-[10px] font-black uppercase tracking-wide";
+                updatePosMonitor();
+            } else {
+                playSound('wrong');
+                mistakes++;
+                updateHeaderUI();
+                showExplanationModal(`Total Belanja Salah! Kamu memasukkan Rp ${userEnteredTotal.toLocaleString('id-ID')}.`);
+            }
+        }
+
+        function addChangeMoney(amount) {
+            initAudio();
+            playSound('coin');
+            givenChangeVal += amount;
+            document.getElementById('given-change-val').textContent = `Rp ${givenChangeVal.toLocaleString('id-ID')}`;
+        }
+
+        function resetChangeGiven() {
+            playSound('click');
+            givenChangeVal = 0;
+            document.getElementById('given-change-val').textContent = "Rp 0";
+        }
+
+        function submitChangeGiven() {
+            initAudio();
+            if (givenChangeVal === targetChangeNeeded) {
+                playSound('correct');
+                score += (currentLevel * 100) + (timerSeconds * 10);
+                updateHeaderUI();
+                nextCustomerOrLevel();
+            } else {
+                playSound('wrong');
+                mistakes++;
+                updateHeaderUI();
+                showExplanationModal(`Uang Kembalian Salah! Kamu memberikan Rp ${givenChangeVal.toLocaleString('id-ID')}.`);
+            }
+        }
+
+        function showExplanationModal(reason) {
+            clearInterval(timerInterval);
+            document.getElementById('eval-reason').textContent = reason;
+            
+            const itemListEl = document.getElementById('eval-items-list');
+            let itemsText = "Barang: " + currentItems.map(i => `${i.name} (Rp ${i.price.toLocaleString('id-ID')})`).join(" + ");
+            itemListEl.textContent = itemsText;
+
+            const discEl = document.getElementById('eval-discount-info');
+            if (discountVal > 0) {
+                discEl.textContent = `Subtotal: Rp ${itemSum.toLocaleString('id-ID')} | Diskon: -Rp ${discountVal.toLocaleString('id-ID')}`;
+            } else {
+                discEl.textContent = `Subtotal: Rp ${itemSum.toLocaleString('id-ID')} (Tanpa Diskon)`;
+            }
+
+            document.getElementById('eval-correct-total').textContent = `Total Belanja Sebenarnya: Rp ${targetTotal.toLocaleString('id-ID')}`;
+            document.getElementById('eval-correct-change').textContent = `Kembalian Sebenarnya: Rp ${customerCashPaid.toLocaleString('id-ID')} - Rp ${targetTotal.toLocaleString('id-ID')} = Rp ${targetChangeNeeded.toLocaleString('id-ID')}`;
+
+            document.getElementById('modal-explanation').classList.remove('hidden');
+        }
+
+        function closeExplanationModal() {
+            document.getElementById('modal-explanation').classList.add('hidden');
+            if (mistakes >= 3) {
+                triggerGameOver(false);
+            } else {
+                nextCustomerOrLevel();
+            }
+        }
+
+        function nextCustomerOrLevel() {
+            if (customerIndex >= 10) {
+                if (currentLevel >= 5) {
+                    triggerGameOver(true);
+                } else {
+                    currentLevel++;
+                    customerIndex = 1;
+                    updateHeaderUI();
+                    loadCustomer();
+                }
+            } else {
+                customerIndex++;
+                updateHeaderUI();
+                loadCustomer();
+            }
+        }
+
+        function updateHeaderUI() {
+            document.getElementById('level-display').textContent = `${currentLevel}/5`;
+            document.getElementById('customer-count-display').textContent = `${customerIndex}/10`;
+            document.getElementById('mistakes-display').textContent = `${mistakes}/3`;
+            document.getElementById('score-display').textContent = score.toLocaleString('id-ID');
+        }
+
+        function triggerGameOver(isVictory) {
+            clearInterval(timerInterval);
+            const modal = document.getElementById('modal-gameover');
+            const icon = document.getElementById('gameover-icon');
+            const title = document.getElementById('gameover-title');
+            const desc = document.getElementById('gameover-desc');
+            const btn = document.getElementById('btn-next-level');
+
+            document.getElementById('final-score').textContent = score.toLocaleString('id-ID');
+            document.getElementById('final-level').textContent = currentLevel;
+
+            if (isVictory) {
+                icon.textContent = "🏆👑";
+                title.textContent = "SELAMAT! KASIR JUARA!";
+                desc.textContent = "Luar biasa! Kamu berhasil menyelesaikan semua 5 Level Kasir Swalayan Matematika!";
+                btn.textContent = "MAIN LAGI ➔";
+            } else {
+                icon.textContent = "💔";
+                title.textContent = "GAME OVER";
+                desc.textContent = "Kamu telah melakukan 3 kali kesalahan hitung. Tetap semangat dan coba lagi!";
+                btn.textContent = "COBA LAGI ➔";
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function restartOrNextLevel() {
+            document.getElementById('modal-gameover').classList.add('hidden');
+            initGame();
+        }
+
+        // Start animation loop and initialize game state on load
+        window.onload = function() {
+            initGame();
+        };
+    </script>
+</body>
+</html>
