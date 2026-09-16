@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matematika Kelas VI - Bangun Ruang</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--b:#1261a0;--d:#083b66;--l:#eef7ff;--w:#fff;--g:#16834b;--r:#c0392b}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--l);color:#17324d}
+header{background:linear-gradient(135deg,#0b4f88,#1684cf);color:white;text-align:center;padding:28px 18px}
+h1{margin:0 0 8px;font-size:clamp(26px,5vw,42px)}header p{margin:0}
+nav{position:sticky;top:0;z-index:100;background:white;display:flex;gap:8px;padding:10px;overflow-x:auto;box-shadow:0 2px 10px #0001}
+nav button, nav a.btn-nav{border:0;background:#e6f3ff;color:var(--d);padding:10px 15px;border-radius:999px;font-weight:bold;white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center}
+nav button.active,.primary{background:var(--b);color:white}
+nav button:hover, nav a.btn-nav:hover{opacity:0.9}
+.container{max-width:1100px;margin:auto;padding:22px}section{display:none}.active-section{display:block}
+.card{background:white;border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 5px 18px #07538c12;border:1px solid #d8ebfa}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.lesson{background:#f7fbff;border:2px solid #d8ebfa;border-radius:16px;padding:18px}
+.icon{font-size:42px}.formula{font-size:clamp(18px,4vw,30px);font-weight:800;color:var(--b);text-align:center;background:#eef7ff;border-radius:14px;padding:18px;margin:14px 0}
+.example{border-left:5px solid var(--b);padding:12px 16px;background:#f7fbff;margin:10px 0;border-radius:0 12px 12px 0}
+.steps{background:#eef7ff;padding:15px;border-radius:12px;margin-top:8px;font-family:monospace,sans-serif;font-size:15px;line-height:1.5}
+.quiz{font-size:19px}.option{display:block;width:100%;text-align:left;margin:9px 0;padding:13px;border:2px solid #cfe5f7;background:white;border-radius:12px;cursor:pointer}
+.option:hover{background:#eef7ff}.feedback{font-weight:bold;min-height:25px;margin-top:15px}
+.badge{display:inline-block;background:#dcefff;color:var(--d);padding:5px 10px;border-radius:20px;font-size:13px;font-weight:bold}
+.primary{border:0;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:bold;transition:background 0.2s}
+.primary:hover{background:var(--d)}
+.visual{text-align:center;font-size:38px;padding:15px}
+
+/* Controls & Simulation Styling */
+.sim-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:800px){.sim-layout{grid-template-columns:1fr}}
+.canvas-container{width:100%;height:320px;background:#1a2634;border-radius:14px;overflow:hidden;position:relative}
+.control-group{margin-bottom:15px}
+.control-group label{display:block;font-weight:bold;margin-bottom:5px;color:var(--d)}
+.control-group input[type=range]{width:100%;cursor:pointer}
+.select-shape{width:100%;padding:12px;border:2px solid #cfe5f7;border-radius:10px;font-size:16px;font-weight:bold;color:var(--d);background:white;margin-bottom:20px}
+
+footer{text-align:center;padding:25px;color:#54718a}@media(max-width:600px){.container{padding:12px}.card{padding:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧊 Explorasi Bangun Ruang</h1>
+  <p>Matematika Kelas VI SD • Kenali Sifat • Visualisasi 3D • Hitung Luas & Volume!</p>
+</header>
+
+<nav>
+  <a href="../mathfun/index.html" class="btn-nav">🏠 Beranda</a>
+  <button class="active" onclick="show('beranda',this)">👋 Pengantar</button>
+  <button onclick="show('materi',this)">📘 Materi</button>
+  <button onclick="show('simulasi',this); init3D();">📐 Simulasi Luas & Volume</button>
+  <button onclick="show('contoh',this)">🧩 Contoh Soal</button>
+  <button onclick="show('latihan',this)">🎯 Latihan Soal</button>
+</nav>
+
+<main class="container">
+  <section id="beranda" class="active-section">
+    <div class="card">
+      <h2>Selamat Datang di Dunia Bangun Ruang! 👋</h2>
+      <p>Bangun ruang adalah bentuk tiga dimensi yang memiliki ruang, volume, dan dibatasi oleh sisi-sisi. Di sekitar kita, terdapat banyak benda berbentuk bangun ruang seperti dadu, lemari, kaleng minuman, hingga bola sepak.</p>
+      <div class="visual">📦 🎲 🥫 ⛺ ⚽ 📐</div>
+      <div class="grid">
+        <div class="lesson"><div class="icon">🧊</div><h3>Kubus & Balok</h3><p>Bangun ruang dengan sisi-sisi berupa persegi atau persegi panjang.</p></div>
+        <div class="lesson"><div class="icon">⛺</div><h3>Prisma & Limas</h3><p>Bangun dengan alas berbentuk segi-n serta bidang tegak datar.</p></div>
+        <div class="lesson"><div class="icon">🥫</div><h3>Tabung & Kerucut</h3><p>Bangun ruang sisi lengkung dengan alas lingkaran.</p></div>
+        <div class="lesson"><div class="icon">⚽</div><h3>Bola</h3><p>Bangun ruang sisi lengkung sempurna tanpa rusuk atau titik sudut.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="materi">
+    <div class="card">
+      <span class="badge">MATERI 1</span>
+      <h2>Kubus</h2>
+      <p>Kubus adalah bangun ruang yang dibatasi oleh 6 buah sisi berbentuk persegi yang kongruen (sama besar).</p>
+      <div class="formula">Luas = 6 × s² &nbsp;|&nbsp; Volume = s³</div>
+      <p><b>Sifat-Sifat Kubus:</b></p>
+      <ul>
+        <li>Memiliki 6 sisi berbentuk persegi kongruen.</li>
+        <li>Memiliki 12 rusuk sama panjang.</li>
+        <li>Memiliki 8 titik sudut.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge">MATERI 2</span>
+      <h2>Balok</h2>
+      <p>Balok adalah bangun ruang tiga dimensi yang dibentuk oleh tiga pasang persegi atau persegi panjang.</p>
+      <div class="formula">L = 2 × (p·l + p·t + l·t) &nbsp;|&nbsp; V = p × l × t</div>
+      <p><b>Sifat-Sifat Balok:</b></p>
+      <ul>
+        <li>Memiliki 6 sisi (sisi yang berhadapan sama luas).</li>
+        <li>Memiliki 12 rusuk (rusuk sejajar sama panjang).</li>
+        <li>Memiliki 8 titik sudut.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge">MATERI 3</span>
+      <h2>Prisma Segitiga</h2>
+      <p>Prisma segitiga adalah bangun ruang yang memiliki alas dan tutup berbentuk segitiga yang identik.</p>
+      <div class="formula">L = (2 × Luas Alas) + (Keliling Alas × t) &nbsp;|&nbsp; V = Luas Alas × t</div>
+      <p><b>Sifat-Sifat Prisma Segitiga:</b></p>
+      <ul>
+        <li>Memiliki 5 sisi (2 alas/tutup segitiga, 3 sisi tegak persegi panjang).</li>
+        <li>Memiliki 9 rusuk.</li>
+        <li>Memiliki 6 titik sudut.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge">MATERI 4</span>
+      <h2>Limas Segiempat</h2>
+      <p>Limas segiempat memiliki alas berbentuk segi empat dan sisi tegak berbentuk segitiga yang bertemu di satu titik puncak.</p>
+      <div class="formula">L = Luas Alas + Total Luas Segitiga Tegak &nbsp;|&nbsp; V = ⅓ × Luas Alas × t</div>
+      <p><b>Sifat-Sifat Limas Segiempat:</b></p>
+      <ul>
+        <li>Memiliki 5 sisi (1 alas segiempat, 4 sisi tegak segitiga).</li>
+        <li>Memiliki 8 rusuk.</li>
+        <li>Memiliki 5 titik sudut (1 titik puncak).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge">MATERI 5</span>
+      <h2>Tabung (Silinder)</h2>
+      <p>Tabung merupakan bangun ruang sisi lengkung yang memiliki alas dan tutup berbentuk lingkaran yang sejajar dan sama.</p>
+      <div class="formula">L = 2 × π × r × (r + t) &nbsp;|&nbsp; V = π × r² × t</div>
+      <p><b>Sifat-Sifat Tabung:</b></p>
+      <ul>
+        <li>Memiliki 3 sisi (2 sisi datar lingkaran, 1 selimut lengkung).</li>
+        <li>Memiliki 2 rusuk lengkung.</li>
+        <li>Tidak memiliki titik sudut.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge">MATERI 6</span>
+      <h2>Kerucut & Bola</h2>
+      <div class="grid">
+        <div class="lesson">
+          <h3>📐 Kerucut</h3>
+          <p>Mempunyai alas lingkaran dan selimut yang mengincup ke puncak.</p>
+          <div class="formula" style="font-size:18px">L = π·r·(r + s) <br> V = ⅓·π·r²·t</div>
+          <p>• 2 Sisi | 1 Rusuk Lengkung | 1 Puncak</p>
+        </div>
+        <div class="lesson">
+          <h3>⚽ Bola</h3>
+          <p>Bangun ruang yang dibatasi oleh satu bidang lengkung saja.</p>
+          <div class="formula" style="font-size:18px">L = 4 · π · r² <br> V = ⁴/₃ · π · r³</div>
+          <p>• 1 Sisi Lengkung | 0 Rusuk | 0 Titik Sudut</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="simulasi">
+    <div class="card">
+      <h2>📐 Simulasi Interaktif Luas & Volume 3D</h2>
+      <p>Ubah ukuran bangun ruang di bawah ini dan perhatikan bagaimana bentuk 3D, rumus, dan kalkulasinya berubah secara langsung!</p>
+      
+      <label for="shapeSelect"><b>Pilih Bangun Ruang:</b></label>
+      <select id="shapeSelect" class="select-shape" onchange="updateShapeUI()">
+        <option value="kubus">🧊 Kubus</option>
+        <option value="balok">📦 Balok</option>
+        <option value="tabung">🥫 Tabung</option>
+        <option value="limas">⛺ Limas Segiempat</option>
+        <option value="prisma">📐 Prisma Segitiga</option>
+        <option value="kerucut">🍦 Kerucut</option>
+      </select>
+
+      <div class="sim-layout">
+        <div>
+          <div class="canvas-container" id="canvas3d"></div>
+          <p style="font-size:12px; color:#666; text-align:center; margin-top:5px;">💡 Drag/Geser mouse pada objek untuk memutar sudut pandang 3D.</p>
+        </div>
+
+        <div>
+          <h3>⚙️ Pengaturan Ukuran (cm)</h3>
+          <div id="controls">
+            <!-- Dynamic Controls Inserted via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <h3>📊 Perhitungan & Langkah Demi Langkah</h3>
+        <div id="calculationResult" class="steps">
+          <!-- Step by Step Math -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contoh">
+    <div class="card">
+      <h2>🧩 Contoh Soal & Pembahasan</h2>
+      
+      <div class="example">
+        <b>Soal 1 (Kubus):</b> Sebuah kotak kado berbentuk kubus memiliki panjang rusuk 10 cm. Berapakah volume dan luas permukaan kotak kado tersebut?
+        <div class="steps">
+• Volume = s × s × s = 10 × 10 × 10 = <b>1.000 cm³</b><br>
+• Luas Permukaan = 6 × s² = 6 × 10² = 6 × 100 = <b>600 cm²</b>
+        </div>
+      </div>
+
+      <div class="example">
+        <b>Soal 2 (Balok):</b> Sebuah akuarium berbentuk balok berukuran panjang 80 cm, lebar 40 cm, dan tinggi 50 cm. Berapa liter volume air jika akuarium diisi penuh?
+        <div class="steps">
+• Volume = p × l × t = 80 × 40 × 50 = 160.000 cm³<br>
+• Konversi ke liter (dm³): 160.000 ÷ 1.000 = <b>160 Liter</b>
+        </div>
+      </div>
+
+      <div class="example">
+        <b>Soal 3 (Tabung):</b> Sebuah kaleng susu memiliki jari-jari alas 7 cm dan tinggi 10 cm. Hitung luas permukaan kaleng tersebut! (Gunakan π = 22/7)
+        <div class="steps">
+• Luas Permukaan = 2 × π × r × (r + t)<br>
+• L = 2 × (22/7) × 7 × (7 + 10)<br>
+• L = 44 × 17 = <b>748 cm²</b>
+        </div>
+      </div>
+
+      <div class="example">
+        <b>Soal 4 (HOTS - Gabungan):</b> Sebuah tempat pensil terdiri dari gabungan tabung dan kerucut dengan jari-jari alas 6 cm. Tinggi bagian tabung adalah 12 cm dan tinggi kerucut adalah 8 cm. Berapa volume total tempat pensil tersebut? (Gunakan π = 3,14)
+        <div class="steps">
+• V_tabung = π × r² × t = 3,14 × 6² × 12 = 3,14 × 36 × 12 = 1.356,48 cm³<br>
+• V_kerucut = ⅓ × π × r² × t = ⅓ × 3,14 × 6² × 8 = 301,44 cm³<br>
+• Volume Total = 1.356,48 + 301,44 = <b>1.657,92 cm³</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="latihan">
+    <div class="card">
+      <h2>🎯 Latihan Soal Bangun Ruang</h2>
+      <p>Uji pemahamanmu dengan menjawab 10 pertanyaan di bawah ini!</p>
+      <div id="quiz"></div>
+      <button class="primary" onclick="checkQuiz()">Periksa Jawaban</button>
+      <p id="result" class="feedback"></p>
+    </div>
+  </section>
+</main>
+
+<footer>Matematika Kelas VI SD • Bangun Ruang • Desain responsif biru & putih</footer>
+
+<script>
+// Section Navigation Logic
+function show(id, btn){
+  document.querySelectorAll("section").forEach(x => x.classList.remove("active-section"));
+  document.getElementById(id).classList.add("active-section");
+  document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
+  btn.classList.add("active");
+  scrollTo({top:0, behavior:"smooth"});
+}
+
+// ---------------------- QUIZ DATA & LOGIC ----------------------
+const qs = [
+  {q:"1. Bangun ruang yang memiliki 6 sisi berbentuk persegi yang kongruen adalah...", o:["Balok","Kubus","Prisma Segitiga","Limas Segiempat"], a:1},
+  {q:"2. Sebuah kubus memiliki panjang sisi 6 cm. Berapakah volumenya?", o:["36 cm³","144 cm³","216 cm³","288 cm³"], a:2},
+  {q:"3. Rumus luas permukaan balok adalah...", o:["p × l × t","2 × (p + l + t)","2 × (p·l + p·t + l·t)","6 × s²"], a:2},
+  {q:"4. Jumlah titik sudut yang dimiliki oleh prisma segitiga adalah...", o:["5","6","8","9"], a:1},
+  {q:"5. Bangun ruang yang memiliki alas lingkaran dan satu titik puncak adalah...", o:["Tabung","Bola","Kerucut","Limas Segiempat"], a:2},
+  {q:"6. Kaleng roti berbentuk tabung dengan r = 7 cm dan t = 10 cm. Volumenya adalah...", o:["1.540 cm³","1.450 cm³","770 cm³","440 cm³"], a:0},
+  {q:"7. Jumlah rusuk pada limas segiempat adalah...", o:["5","6","8","10"], a:2},
+  {q:"8. Sebuah kotak kardus berbentuk balok berukuran 10 cm × 5 cm × 4 cm. Volume kardus adalah...", o:["100 cm³","200 cm³","300 cm³","400 cm³"], a:1},
+  {q:"9. Bangun ruang yang tidak memiliki rusuk dan titik sudut sama sekali adalah...", o:["Tabung","Kerucut","Bola","Prisma"], a:2},
+  {q:"10. Sebuah kubus mempunyai luas permukaan 150 cm². Panjang sisi kubus tersebut adalah...", o:["5 cm","6 cm","10 cm","25 cm"], a:0}
+];
+
+const quiz = document.getElementById("quiz");
+qs.forEach((x, i) => {
+  let d = document.createElement("div");
+  d.className = "quiz card";
+  d.innerHTML = "<b>" + x.q + "</b>" + x.o.map((v, j) => `<label class="option"><input type="radio" name="q${i}" value="${j}"> ${v}</label>`).join("");
+  quiz.appendChild(d);
+});
+
+function checkQuiz(){
+  let s = 0, n = 0;
+  qs.forEach((x, i) => {
+    let v = document.querySelector(`input[name=q${i}]:checked`);
+    if(v){
+      n++;
+      if(+v.value === x.a) s++;
+    }
+  });
+  let r = document.getElementById("result");
+  if(n < qs.length){
+    r.style.color = "var(--r)";
+    r.textContent = `Mohon jawab semua soal terlebih dahulu (${n}/${qs.length}).`;
+    return;
+  }
+  let nilai = s * 10;
+  r.style.color = "var(--g)";
+  r.textContent = `🎉 Skor ${s}/10 — Nilai Total: ${nilai}. ${nilai >= 80 ? "Luar biasa! Kamu sangat memahami Bangun Ruang!" : "Tetap semangat! Pelajari kembali materi dan coba lagi."}`;
+}
+
+// ---------------------- THREE.JS SIMULATION ----------------------
+let scene, camera, renderer, currentMesh;
+let is3DInit = false;
+
+function init3D() {
+  if (is3DInit) return;
+  is3DInit = true;
+
+  const container = document.getElementById('canvas3d');
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1a2634);
+
+  camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+  camera.position.set(20, 20, 35);
+  camera.lookAt(0, 0, 0);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+  scene.add(ambientLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(20, 40, 20);
+  scene.add(dirLight);
+
+  // Mouse drag rotation control
+  let isDragging = false;
+  let previousMousePosition = { x: 0, y: 0 };
+
+  const domElem = renderer.domElement;
+  domElem.addEventListener('mousedown', () => isDragging = true);
+  domElem.addEventListener('mouseup', () => isDragging = false);
+  domElem.addEventListener('mouseleave', () => isDragging = false);
+  domElem.addEventListener('mousemove', (e) => {
+    if (isDragging && currentMesh) {
+      const deltaMove = { x: e.offsetX - previousMousePosition.x, y: e.offsetY - previousMousePosition.y };
+      currentMesh.rotation.y += deltaMove.x * 0.01;
+      currentMesh.rotation.x += deltaMove.y * 0.01;
+    }
+    previousMousePosition = { x: e.offsetX, y: e.offsetY };
+  });
+
+  // Touch controls
+  domElem.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      isDragging = true;
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  });
+  domElem.addEventListener('touchend', () => isDragging = false);
+  domElem.addEventListener('touchmove', (e) => {
+    if (isDragging && currentMesh && e.touches.length === 1) {
+      const deltaMove = { x: e.touches[0].clientX - previousMousePosition.x, y: e.touches[0].clientY - previousMousePosition.y };
+      currentMesh.rotation.y += deltaMove.x * 0.01;
+      currentMesh.rotation.x += deltaMove.y * 0.01;
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if(!container) return;
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (currentMesh && !isDragging) {
+      currentMesh.rotation.y += 0.005;
+    }
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  updateShapeUI();
+}
+
+// Controls & Calculation Logic
+function updateShapeUI() {
+  const shape = document.getElementById('shapeSelect').value;
+  const controlsDiv = document.getElementById('controls');
+  controlsDiv.innerHTML = '';
+
+  if (shape === 'kubus') {
+    controlsDiv.innerHTML = createSlider('sisi', 'Sisi (s)', 2, 12, 6);
+  } else if (shape === 'balok') {
+    controlsDiv.innerHTML = createSlider('panjang', 'Panjang (p)', 2, 12, 8) +
+                            createSlider('lebar', 'Lebar (l)', 2, 10, 5) +
+                            createSlider('tinggi', 'Tinggi (t)', 2, 10, 4);
+  } else if (shape === 'tabung') {
+    controlsDiv.innerHTML = createSlider('r', 'Jari-jari (r)', 2, 8, 4) +
+                            createSlider('tinggi', 'Tinggi (t)', 2, 12, 8);
+  } else if (shape === 'limas') {
+    controlsDiv.innerHTML = createSlider('sisi', 'Sisi Alas (s)', 2, 12, 6) +
+                            createSlider('tinggi', 'Tinggi Limas (t)', 2, 12, 8);
+  } else if (shape === 'prisma') {
+    controlsDiv.innerHTML = createSlider('alasSegi', 'Alas Segitiga (a)', 2, 10, 6) +
+                            createSlider('tinggiSegi', 'Tinggi Segitiga (ts)', 2, 10, 4) +
+                            createSlider('tinggiPrisma', 'Tinggi Prisma (tp)', 2, 12, 8);
+  } else if (shape === 'kerucut') {
+    controlsDiv.innerHTML = createSlider('r', 'Jari-jari (r)', 2, 8, 4) +
+                            createSlider('tinggi', 'Tinggi (t)', 2, 12, 7);
+  }
+
+  calculateAndRender();
+}
+
+function createSlider(id, label, min, max, val) {
+  return `<div class="control-group">
+            <label>${label}: <span id="${id}_val">${val}</span> cm</label>
+            <input type="range" id="${id}" min="${min}" max="${max}" value="${val}" oninput="document.getElementById('${id}_val').innerText=this.value; calculateAndRender();">
+          </div>`;
+}
+
+function calculateAndRender() {
+  if (!scene) return;
+  if (currentMesh) scene.remove(currentMesh);
+
+  const shape = document.getElementById('shapeSelect').value;
+  const resDiv = document.getElementById('calculationResult');
+
+  const material = new THREE.MeshPhongMaterial({
+    color: 0x3182ce,
+    wireframe: false,
+    transparent: true,
+    opacity: 0.85,
+    shininess: 80
+  });
+
+  const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 2 });
+
+  let geom;
+  let calcText = '';
+
+  if (shape === 'kubus') {
+    const s = parseFloat(document.getElementById('sisi').value);
+    geom = new THREE.BoxGeometry(s, s, s);
+    
+    const lp = 6 * s * s;
+    const vol = Math.pow(s, 3);
+
+    calcText = `<b>Rumus Kubus:</b><br>
+• Luas Permukaan = 6 × s² = 6 × ${s}² = 6 × ${s*s} = <b>${lp} cm²</b><br>
+• Volume = s³ = ${s}³ = <b>${vol} cm³</b>`;
+  } 
+  else if (shape === 'balok') {
+    const p = parseFloat(document.getElementById('panjang').value);
+    const l = parseFloat(document.getElementById('lebar').value);
+    const t = parseFloat(document.getElementById('tinggi').value);
+    geom = new THREE.BoxGeometry(p, t, l);
+
+    const lp = 2 * (p*l + p*t + l*t);
+    const vol = p * l * t;
+
+    calcText = `<b>Rumus Balok:</b><br>
+• Luas Permukaan = 2 × (p·l + p·t + l·t)<br>
+  = 2 × (${p}×${l} + ${p}×${t} + ${l}×${t})<br>
+  = 2 × (${p*l} + ${p*t} + ${l*t}) = <b>${lp} cm²</b><br>
+• Volume = p × l × t = ${p} × ${l} × ${t} = <b>${vol} cm³</b>`;
+  }
+  else if (shape === 'tabung') {
+    const r = parseFloat(document.getElementById('r').value);
+    const t = parseFloat(document.getElementById('tinggi').value);
+    geom = new THREE.CylinderGeometry(r, r, t, 32);
+
+    const pi = (r % 7 === 0) ? 22/7 : 3.14;
+    const lp = Math.round(2 * pi * r * (r + t) * 100) / 100;
+    const vol = Math.round(pi * r * r * t * 100) / 100;
+
+    calcText = `<b>Rumus Tabung:</b> (π ≈ ${pi === 3.14 ? '3,14' : '22/7'})<br>
+• Luas Permukaan = 2 × π × r × (r + t) = 2 × ${pi === 3.14 ? '3,14' : '22/7'} × ${r} × (${r} + ${t}) = <b>${lp} cm²</b><br>
+• Volume = π × r² × t = ${pi === 3.14 ? '3,14' : '22/7'} × ${r}² × ${t} = <b>${vol} cm³</b>`;
+  }
+  else if (shape === 'limas') {
+    const s = parseFloat(document.getElementById('sisi').value);
+    const t = parseFloat(document.getElementById('tinggi').value);
+    geom = new THREE.ConeGeometry(s * 0.8, t, 4); // 4 sides pyramid
+
+    const tMiring = Math.sqrt(Math.pow(s/2, 2) + Math.pow(t, 2));
+    const luasAlas = s * s;
+    const luasSegitiga = 0.5 * s * tMiring;
+    const lp = Math.round((luasAlas + 4 * luasSegitiga) * 100) / 100;
+    const vol = Math.round((1/3 * luasAlas * t) * 100) / 100;
+
+    calcText = `<b>Rumus Limas Segiempat:</b><br>
+• Luas Alas = s × s = ${s} × ${s} = ${luasAlas} cm²<br>
+• Tinggi Sisi Miring = √((${(s/2)}²) + ${t}²) ≈ ${tMiring.toFixed(2)} cm<br>
+• Luas Permukaan = Luas Alas + (4 × Luas Segitiga Tegak)<br>
+  = ${luasAlas} + (4 × ½ × ${s} × ${tMiring.toFixed(2)}) = <b>${lp} cm²</b><br>
+• Volume = ⅓ × Luas Alas × t = ⅓ × ${luasAlas} × ${t} = <b>${vol} cm³</b>`;
+  }
+  else if (shape === 'prisma') {
+    const a = parseFloat(document.getElementById('alasSegi').value);
+    const ts = parseFloat(document.getElementById('tinggiSegi').value);
+    const tp = parseFloat(document.getElementById('tinggiPrisma').value);
+
+    // Custom Prism Geometry
+    const shape3D = new THREE.Shape();
+    shape3D.moveTo(-a/2, -ts/2);
+    shape3D.lineTo(a/2, -ts/2);
+    shape3D.lineTo(0, ts/2);
+    shape3D.closePath();
+
+    const extrudeSettings = { depth: tp, bevelEnabled: false };
+    geom = new THREE.ExtrudeGeometry(shape3D, extrudeSettings);
+    geom.center();
+
+    const luasAlas = 0.5 * a * ts;
+    const sMiring = Math.sqrt(Math.pow(a/2, 2) + Math.pow(ts, 2));
+    const keliling = a + 2 * sMiring;
+    const lp = Math.round((2 * luasAlas + keliling * tp) * 100) / 100;
+    const vol = Math.round((luasAlas * tp) * 100) / 100;
+
+    calcText = `<b>Rumus Prisma Segitiga:</b><br>
+• Luas Alas = ½ × a × ts = ½ × ${a} × ${ts} = ${luasAlas} cm²<br>
+• Luas Permukaan = (2 × Luas Alas) + (Keliling Alas × tp) = <b>${lp} cm²</b><br>
+• Volume = Luas Alas × tp = ${luasAlas} × ${tp} = <b>${vol} cm³</b>`;
+  }
+  else if (shape === 'kerucut') {
+    const r = parseFloat(document.getElementById('r').value);
+    const t = parseFloat(document.getElementById('tinggi').value);
+    geom = new THREE.ConeGeometry(r, t, 32);
+
+    const s = Math.sqrt(r*r + t*t);
+    const pi = (r % 7 === 0) ? 22/7 : 3.14;
+    const lp = Math.round((pi * r * (r + s)) * 100) / 100;
+    const vol = Math.round((1/3 * pi * r * r * t) * 100) / 100;
+
+    calcText = `<b>Rumus Kerucut:</b><br>
+• Garis Pelukis (s) = √(r² + t²) = √(${r}² + ${t}²) ≈ ${s.toFixed(2)} cm<br>
+• Luas Permukaan = π × r × (r + s) = <b>${lp} cm²</b><br>
+• Volume = ⅓ × π × r² × t = <b>${vol} cm³</b>`;
+  }
+
+  // Create Mesh with Wireframe Edges
+  const mesh = new THREE.Mesh(geom, material);
+  const wireframeGeom = new THREE.WireframeGeometry(geom);
+  const wireframe = new THREE.LineSegments(wireframeGeom, wireframeMaterial);
+  mesh.add(wireframe);
+
+  currentMesh = mesh;
+  scene.add(currentMesh);
+  resDiv.innerHTML = calcText;
+}
+</script>
+</body>
+</html>
