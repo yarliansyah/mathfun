@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematika Menyenangkan - Kelas VI SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Fredoka & Plus Jakarta Sans) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #fef3c7 100%);
+            min-height: 100vh;
+        }
+
+        .font-fun {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Hero Banner Floating Effect */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 5px; }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col justify-between min-h-screen">
+
+    <!-- NAVBAR (STICKY HEADER) -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-2 border-indigo-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo & Brand Name -->
+                <a href="#beranda" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-indigo-300 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+                    <div>
+                        <span class="font-fun text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">
+                            MathFun
+                        </span>
+                        <span class="block text-[10px] sm:text-xs font-bold text-slate-400 tracking-wider">KELAS 6 SD</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden md:flex items-center gap-2">
+                    <a href="#beranda" class="px-4 py-2.5 rounded-xl font-fun font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition flex items-center gap-2">
+                        <i class="fa-solid fa-house text-indigo-500"></i> Beranda
+                    </a>
+
+                    <!-- Dropdown 1: MATERI -->
+                    <div class="relative group">
+                        <button class="px-4 py-2.5 rounded-xl font-fun font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-book-open-reader text-emerald-500"></i> Materi Pembelajaran
+                            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-hover:rotate-180 transition-transform"></i>
+                        </button>
+                        <!-- Submenu Dropdown -->
+                        <div class="absolute left-0 top-full pt-2 w-72 hidden group-hover:block transition-all duration-200">
+                            <div class="glass-card rounded-2xl p-2 shadow-xl border border-indigo-100 flex flex-col gap-1">
+                                <a href="../mathfun/materi_bilangan_bulat.html" class="p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-calculator text-emerald-500 mt-1"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Bilangan Bulat</div>
+                                        <div class="text-[11px] text-slate-500">Operasi Hitung Bulat</div>
+                                    </div>
+                                </a>
+                                <a href="../mathfun/materi_pecahan_desimal.html" class="p-3 rounded-xl hover:bg-amber-50 text-slate-700 hover:text-amber-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-pie-chart text-amber-500 mt-1"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Pecahan Desimal</div>
+                                        <div class="text-[11px] text-slate-500">Pecahan, Desimal & Persen</div>
+                                    </div>
+                                </a>
+                                <a href="../mathfun/Materi_perbandingan.html" class="p-3 rounded-xl hover:bg-purple-50 text-slate-700 hover:text-purple-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-scale-balanced text-purple-500 mt-1"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Perbandingan dan Skala</div>
+                                        <div class="text-[11px] text-slate-500">Konsep Skala & Rasio</div>
+                                    </div>
+                                </a>
+                                <a href="../mathfun/materi_bangun_ruang.html" class="p-3 rounded-xl hover:bg-cyan-50 text-slate-700 hover:text-cyan-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-cube text-cyan-500 mt-1"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Bangun Ruang</div>
+                                        <div class="text-[11px] text-slate-500">Sifat & Volume Bangun 3D</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dropdown 2: GAME -->
+                    <div class="relative group">
+                        <button class="px-4 py-2.5 rounded-xl font-fun font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-gamepad text-pink-500"></i> Game Edukasi
+                            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-hover:rotate-180 transition-transform"></i>
+                        </button>
+                        <!-- Submenu Dropdown -->
+                        <div class="absolute left-0 top-full pt-2 w-72 hidden group-hover:block transition-all duration-200">
+                            <div class="glass-card rounded-2xl p-2 shadow-xl border border-indigo-100 flex flex-col gap-1">
+                                <a href="../mathfun/Game_Kasir.html" class="p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-cash-register text-emerald-500 mt-1 text-base"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Kasir Swalayan</div>
+                                        <div class="text-[11px] text-slate-500">Simulasi Belanja & Hitungan</div>
+                                    </div>
+                                </a>
+                                <a href="../mathfun/Game_clash_of_math.html" class="p-3 rounded-xl hover:bg-amber-50 text-slate-700 hover:text-amber-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-shield-halved text-amber-500 mt-1 text-base"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Clash of Math</div>
+                                        <div class="text-[11px] text-slate-500">Perebutan Wilayah Klan</div>
+                                    </div>
+                                </a>
+                                <a href="../mathfun/Game_skala.html" class="p-3 rounded-xl hover:bg-red-50 text-slate-700 hover:text-red-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-hot-tub-person text-red-500 mt-1 text-base"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Shot the Balloon 🎈</div>
+                                        <div class="text-[11px] text-slate-500">Game Menembak Balon Skala</div>
+                                    </div>
+                                </a>
+                                <a href="../mathfun/Game_Juragan_air.html" class="p-3 rounded-xl hover:bg-cyan-50 text-slate-700 hover:text-cyan-700 transition flex items-start gap-3">
+                                    <i class="fa-solid fa-droplet text-cyan-500 mt-1 text-base"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Juragan Air</div>
+                                        <div class="text-[11px] text-slate-500">Petualangan Volume Bangun Ruang</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#tentang" class="px-4 py-2.5 rounded-xl font-fun font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition flex items-center gap-2">
+                        <i class="fa-solid fa-user text-purple-500"></i> Tentang Saya
+                    </a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Navigation Container -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-100 bg-white/95 px-4 pt-3 pb-6 space-y-3">
+            <a href="#beranda" onclick="toggleMobileMenu()" class="block py-2 font-fun font-bold text-slate-700 hover:text-indigo-600">
+                <i class="fa-solid fa-house text-indigo-500 mr-2"></i> Beranda
+            </a>
+            
+            <div class="pt-2 border-t border-slate-100">
+                <div class="font-fun font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Materi Pembelajaran</div>
+                <div class="pl-3 space-y-2 border-l-2 border-emerald-300">
+                    <a href="../mathfun/materi_bilangan_bulat.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-600">Bilangan Bulat</a>
+                    <a href="../mathfun/materi_pecahan_desimal.html" class="block text-sm font-semibold text-slate-700 hover:text-amber-600">Pecahan Desimal</a>
+                    <a href="../mathfun/Materi_perbandingan.html" class="block text-sm font-semibold text-slate-700 hover:text-purple-600">Perbandingan dan Skala</a>
+                    <a href="../mathfun/materi_bangun_ruang.html" class="block text-sm font-semibold text-slate-700 hover:text-cyan-600">Bangun Ruang</a>
+                </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100">
+                <div class="font-fun font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">Game Edukasi</div>
+                <div class="pl-3 space-y-2 border-l-2 border-pink-300">
+                    <a href="../mathfun/Game_Kasir.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-600">Kasir Swalayan</a>
+                    <a href="../mathfun/Game_clash_of_math.html" class="block text-sm font-semibold text-slate-700 hover:text-amber-600">Clash of Math</a>
+                    <a href="../mathfun/Game_skala.html" class="block text-sm font-semibold text-slate-700 hover:text-red-600">Shot the Balloon 🎈</a>
+                    <a href="../mathfun/Game_Juragan_air.html" class="block text-sm font-semibold text-slate-700 hover:text-cyan-600">Juragan Air</a>
+                </div>
+            </div>
+
+            <a href="#tentang" onclick="toggleMobileMenu()" class="block pt-2 border-t border-slate-100 font-fun font-bold text-slate-700 hover:text-indigo-600">
+                <i class="fa-solid fa-user text-purple-500 mr-2"></i> Tentang Saya
+            </a>
+        </div>
+    </header>
+
+    <!-- SECTION 1: BANNER / HERO SECTION -->
+    <section id="beranda" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 md:p-12 border border-white/80 relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white shadow-2xl">
+            
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-[200px] select-none pointer-events-none">
+                <i class="fa-solid fa-calculator"></i>
+            </div>
+            <div class="absolute top-5 right-1/3 opacity-20 text-6xl animate-bounce pointer-events-none">
+                <i class="fa-solid fa-square-root-variable"></i>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+                <div class="md:col-span-7 space-y-4 sm:space-y-6 text-center md:text-left">
+                    <span class="inline-block bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase border border-white/30 text-amber-300">
+                        <i class="fa-solid fa-star mr-1"></i> Edisi Materi Kelas VI SD
+                    </span>
+                    <h1 class="font-fun text-3xl sm:text-5xl lg:text-6xl font-black leading-tight drop-shadow-md">
+                        Matematika <span class="text-amber-300">Menyenangkan!</span>
+                    </h1>
+                    <p class="text-sm sm:text-lg text-indigo-100 max-w-xl font-medium leading-relaxed">
+                        Belajar matematika jadi seru dan interaktif! Eksplorasi berbagai rangkuman materi lengkap serta mainkan game petualangan matematika yang menantang!
+                    </p>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4 pt-2">
+                        <a href="#materi-section" class="px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-fun font-bold rounded-2xl shadow-lg transition transform hover:-translate-y-1 flex items-center gap-2">
+                            <i class="fa-solid fa-book-open"></i> Pelajari Materi
+                        </a>
+                        <a href="#game-section" class="px-6 py-3.5 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-fun font-bold rounded-2xl border border-white/40 transition transform hover:-translate-y-1 flex items-center gap-2">
+                            <i class="fa-solid fa-gamepad"></i> Mainkan Game
+                        </a>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 flex justify-center">
+                    <div class="relative animate-float">
+                        <div class="w-56 h-56 sm:w-72 sm:h-72 rounded-full bg-white/10 backdrop-blur-md p-4 border-2 border-white/30 shadow-2xl flex items-center justify-center">
+                            <div class="w-full h-full rounded-full bg-gradient-to-tr from-amber-400 to-pink-400 flex items-center justify-center text-8xl text-white shadow-inner">
+                                <i class="fa-solid fa-graduation-cap drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: MATERI PEMBELAJARAN (MENU & SUBMENU CARDS) -->
+    <section id="materi-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">Menu 1</span>
+            <h2 class="font-fun text-3xl sm:text-4xl font-bold text-slate-800 mt-2">Materi Pembelajaran Kelas 6</h2>
+            <p class="text-slate-500 text-sm sm:text-base mt-1">Pilih sub menu materi matematika yang ingin kamu pelajari hari ini:</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Sub Menu Materi 1 -->
+            <div class="glass-card rounded-3xl p-6 border-t-4 border-emerald-500 hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col justify-between">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl font-bold mb-4 shadow-sm">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600">Sub Menu 1.1</span>
+                    <h3 class="font-fun text-xl font-bold text-slate-800 mt-1 mb-2">Bilangan Bulat</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4">
+                        Pembahasan konsep dasar serta operasi hitung campuran bilangan bulat positif dan negatif.
+                    </p>
+                </div>
+                <a href="../mathfun/materi_bilangan_bulat.html" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-fun font-bold text-center rounded-xl transition shadow-md shadow-emerald-200 block">
+                    Buka Materi <i class="fa-solid fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+
+            <!-- Sub Menu Materi 2 -->
+            <div class="glass-card rounded-3xl p-6 border-t-4 border-amber-500 hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col justify-between">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl font-bold mb-4 shadow-sm">
+                        <i class="fa-solid fa-pie-chart"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-600">Sub Menu 1.2</span>
+                    <h3 class="font-fun text-xl font-bold text-slate-800 mt-1 mb-2">Pecahan Desimal</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4">
+                        Operasi pecahan biasa, pecahan campuran, bentuk desimal, serta perhitungan persen.
+                    </p>
+                </div>
+                <a href="../mathfun/materi_pecahan_desimal.html" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-fun font-bold text-center rounded-xl transition shadow-md shadow-amber-200 block">
+                    Buka Materi <i class="fa-solid fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+
+            <!-- Sub Menu Materi 3 -->
+            <div class="glass-card rounded-3xl p-6 border-t-4 border-purple-500 hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col justify-between">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-2xl font-bold mb-4 shadow-sm">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-purple-600">Sub Menu 1.3</span>
+                    <h3 class="font-fun text-xl font-bold text-slate-800 mt-1 mb-2">Perbandingan & Skala</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4">
+                        Memahami rasio perbandingan, perhitungan jarak peta, dan skala gambar secara sederhana.
+                    </p>
+                </div>
+                <a href="../mathfun/Materi_perbandingan.html" class="w-full py-2.5 bg-purple-500 hover:bg-purple-600 text-white font-fun font-bold text-center rounded-xl transition shadow-md shadow-purple-200 block">
+                    Buka Materi <i class="fa-solid fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+
+            <!-- Sub Menu Materi 4 -->
+            <div class="glass-card rounded-3xl p-6 border-t-4 border-cyan-500 hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col justify-between">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-2xl font-bold mb-4 shadow-sm">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-600">Sub Menu 1.4</span>
+                    <h3 class="font-fun text-xl font-bold text-slate-800 mt-1 mb-2">Bangun Ruang</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4">
+                        Memahami sifat-sifat bangun ruang 3D, rumus volume, serta luas permukaan bangun.
+                    </p>
+                </div>
+                <a href="../mathfun/materi_bangun_ruang.html" class="w-full py-2.5 bg-cyan-500 hover:bg-cyan-600 text-white font-fun font-bold text-center rounded-xl transition shadow-md shadow-cyan-200 block">
+                    Buka Materi <i class="fa-solid fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: GAME EDUKASI INTERAKTIF (MENU & SUBMENU CARDS) -->
+    <section id="game-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest text-pink-600 bg-pink-100 px-3 py-1 rounded-full">Menu 2</span>
+            <h2 class="font-fun text-3xl sm:text-4xl font-bold text-slate-800 mt-2">Game Edukasi Matematika</h2>
+            <p class="text-slate-500 text-sm sm:text-base mt-1">Uji pemahamanmu lewat sub menu game yang seru dan menantang berikut:</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Sub Menu Game 1: Kasir Swalayan -->
+            <div class="glass-card rounded-3xl p-6 border-2 border-emerald-300 hover:border-emerald-500 transition shadow-lg hover:shadow-2xl flex flex-col sm:flex-row gap-6 items-center">
+                <div class="w-full sm:w-2/5 h-48 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 flex flex-col items-center justify-center text-white p-4 text-center shadow-md relative overflow-hidden">
+                    <i class="fa-solid fa-cash-register text-6xl text-emerald-200 mb-2 drop-shadow"></i>
+                    <span class="font-fun font-bold text-lg text-emerald-100">Kasir Swalayan</span>
+                    <span class="text-[10px] text-emerald-200 uppercase font-semibold">Shopping Game</span>
+                </div>
+                <div class="w-full sm:w-3/5 space-y-3">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-md">Sub Menu 2.1</span>
+                    <h3 class="font-fun text-2xl font-bold text-slate-800">Kasir Swalayan</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Simulasi menjadi kasir toko! Hitung total belanjaan, kembalian, dan diskon pecahan desimal dengan tepat.
+                    </p>
+                    <a href="../mathfun/Game_Kasir.html" class="inline-block px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-fun font-bold rounded-xl shadow-md transition transform hover:scale-105">
+                        <i class="fa-solid fa-play mr-1"></i> Mainkan Game
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sub Menu Game 2: Clash of Math -->
+            <div class="glass-card rounded-3xl p-6 border-2 border-amber-300 hover:border-amber-500 transition shadow-lg hover:shadow-2xl flex flex-col sm:flex-row gap-6 items-center">
+                <div class="w-full sm:w-2/5 h-48 rounded-2xl bg-gradient-to-br from-amber-600 to-red-700 flex flex-col items-center justify-center text-white p-4 text-center shadow-md relative overflow-hidden">
+                    <i class="fa-solid fa-shield-halved text-6xl text-yellow-300 mb-2 drop-shadow"></i>
+                    <span class="font-fun font-bold text-lg text-yellow-300">Clash of Math</span>
+                    <span class="text-[10px] text-amber-200 uppercase font-semibold">Territory War</span>
+                </div>
+                <div class="w-full sm:w-3/5 space-y-3">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-2.5 py-1 rounded-md">Sub Menu 2.2</span>
+                    <h3 class="font-fun text-2xl font-bold text-slate-800">Clash of Math</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Game strategi pertempuran klan! Jawab soal operasi bilangan cepat untuk menguasai wilayah pada peta.
+                    </p>
+                    <a href="../mathfun/Game_clash_of_math.html" class="inline-block px-6 py-3 bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white font-fun font-bold rounded-xl shadow-md transition transform hover:scale-105">
+                        <i class="fa-solid fa-play mr-1"></i> Mainkan Game
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sub Menu Game 3: Shot the Balloon (Ikon Balon Terbang & Emoji 🎈) -->
+            <div class="glass-card rounded-3xl p-6 border-2 border-red-300 hover:border-red-500 transition shadow-lg hover:shadow-2xl flex flex-col sm:flex-row gap-6 items-center">
+                <div class="w-full sm:w-2/5 h-48 rounded-2xl bg-gradient-to-br from-red-500 to-pink-600 flex flex-col items-center justify-center text-white p-4 text-center shadow-md relative overflow-hidden">
+                    <!-- Ikon Balon Udara (Hot Air Balloon) -->
+                    <i class="fa-solid fa-hot-tub-person text-6xl text-red-100 mb-2 drop-shadow"></i>
+                    <span class="font-fun font-bold text-lg text-white">Shot the Balloon 🎈</span>
+                    <span class="text-[10px] text-red-100 uppercase font-semibold">Scale Shooter</span>
+                </div>
+                <div class="w-full sm:w-3/5 space-y-3">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-red-600 bg-red-100 px-2.5 py-1 rounded-md">Sub Menu 2.3</span>
+                    <h3 class="font-fun text-2xl font-bold text-slate-800 flex items-center gap-2">
+                        Shot the Balloon <span class="text-2xl">🎈</span>
+                    </h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Tembak balon udara dengan jawaban perbandingan dan skala yang paling tepat sebelum balon terbang tinggi!
+                    </p>
+                    <a href="../mathfun/Game_skala.html" class="inline-block px-6 py-3 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-fun font-bold rounded-xl shadow-md transition transform hover:scale-105">
+                        <i class="fa-solid fa-play mr-1"></i> Mainkan Game
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sub Menu Game 4: Juragan Air -->
+            <div class="glass-card rounded-3xl p-6 border-2 border-cyan-300 hover:border-cyan-500 transition shadow-lg hover:shadow-2xl flex flex-col sm:flex-row gap-6 items-center">
+                <div class="w-full sm:w-2/5 h-48 rounded-2xl bg-gradient-to-br from-cyan-600 to-blue-800 flex flex-col items-center justify-center text-white p-4 text-center shadow-md relative overflow-hidden">
+                    <i class="fa-solid fa-droplet text-6xl text-cyan-300 mb-2 drop-shadow"></i>
+                    <span class="font-fun font-bold text-lg text-cyan-300">Juragan Air</span>
+                    <span class="text-[10px] text-cyan-200 uppercase font-semibold">Volume Simulation</span>
+                </div>
+                <div class="w-full sm:w-3/5 space-y-3">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-600 bg-cyan-100 px-2.5 py-1 rounded-md">Sub Menu 2.4</span>
+                    <h3 class="font-fun text-2xl font-bold text-slate-800">Juragan Air</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Simulasi menjadi juragan depot air. Hitung volume berbagai bangun ruang wadah pelanggan untuk meraup untung!
+                    </p>
+                    <a href="../mathfun/Game_Juragan_air.html" class="inline-block px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-fun font-bold rounded-xl shadow-md transition transform hover:scale-105">
+                        <i class="fa-solid fa-play mr-1"></i> Mainkan Game
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 4: TENTANG SAYA -->
+    <section id="tentang" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 border border-white/80 shadow-xl bg-white/70">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                
+                <!-- Profile Avatar -->
+                <div class="md:col-span-4 flex justify-center">
+                    <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-1.5 shadow-2xl">
+                        <div class="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-7xl overflow-hidden">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="md:col-span-8 space-y-4 text-center md:text-left">
+                    <span class="text-xs font-bold uppercase tracking-widest text-purple-600 bg-purple-100 px-3 py-1 rounded-full">
+                        Pengembang Media
+                    </span>
+                    <h2 class="font-fun text-3xl font-bold text-slate-800">Tentang Saya</h2>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        Halo! Selamat datang di platform media pembelajaran matematika interaktif. Media ini dirancang khusus untuk membantu siswa-siswi Kelas VI Sekolah Dasar dalam memahami konsep-konsep matematika dengan cara yang lebih visual, menyenangkan, dan interaktif.
+                    </p>
+                    <div class="pt-2 flex flex-wrap justify-center md:justify-start gap-4 text-xs sm:text-sm font-semibold text-slate-700">
+                        <div class="bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100 flex items-center gap-2">
+                            <i class="fa-solid fa-folder text-indigo-500"></i> Media Pembelajaran Interaktif
+                        </div>
+                        <div class="bg-pink-50 px-4 py-2 rounded-xl border border-pink-100 flex items-center gap-2">
+                            <i class="fa-solid fa-heart text-pink-500"></i> Dibuat dengan Cinta
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-fun font-bold text-slate-700 text-sm mb-1">Matematika Menyenangkan • Kelas VI SD</p>
+            <p>© Media Pembelajaran Matematika Kelas VI SD</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Helper -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
