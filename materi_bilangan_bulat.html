@@ -4,6 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matematika Kelas VI - Bilangan Bulat</title>
+
+<!-- MathJax 3 Configuration & Library -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <style>
 :root {
   --b: #1261a0;
@@ -36,7 +51,7 @@ section.active-section { display: block; }
 .icon { font-size: 42px; margin-bottom: 8px; }
 .formula { font-size: clamp(18px, 4vw, 28px); font-weight: 800; color: var(--b); text-align: center; background: var(--l); border-radius: 14px; padding: 16px; margin: 14px 0; border: 1px dashed #bcdbf7; }
 .example { border-left: 5px solid var(--b); padding: 12px 16px; background: #f7fbff; margin: 12px 0; border-radius: 0 12px 12px 0; }
-.steps { background: var(--l); padding: 15px; border-radius: 12px; margin-top: 8px; font-family: monospace, sans-serif; font-size: 15px; line-height: 1.6; color: #0f3254; }
+.steps { background: var(--l); padding: 15px; border-radius: 12px; margin-top: 8px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #0f3254; }
 
 .quiz { font-size: 18px; }
 .option { display: block; width: 100%; text-align: left; margin: 9px 0; padding: 13px; border: 2px solid #cfe5f7; background: white; border-radius: 12px; cursor: pointer; transition: background 0.15s; }
@@ -45,7 +60,7 @@ section.active-section { display: block; }
 .badge { display: inline-block; background: #dcefff; color: var(--d); padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 8px; }
 .primary { border: 0; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: background 0.2s; }
 .primary:hover { background: var(--d); }
-.visual { text-align: center; font-size: 38px; padding: 15px; }
+.visual { text-align: center; font-size: 24px; padding: 15px; }
 
 /* Interactive Simulator Layout Styles */
 .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -93,17 +108,17 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
     <div class="card">
       <h2>Selamat Datang di Dunia Bilangan Bulat! 👋</h2>
       <p>Bilangan bulat sangat erat kaitannya dengan kehidupan sehari-hari. Mulai dari mengukur suhu udara di daerah bersalju, menghitung kedalaman laut, posisi lantai gedung, hingga mencatat untung dan rugi!</p>
-      <div class="visual">❄️ −10°C &nbsp; | &nbsp; 🤿 −5m &nbsp; | &nbsp; 0 &nbsp; | &nbsp; 🏔️ +150m &nbsp; | &nbsp; ☀️ +35°C</div>
+      <div class="visual">❄️ $-10^\circ\text{C}$ &nbsp;|&nbsp; 🤿 $-5\text{ m}$ &nbsp;|&nbsp; $0$ &nbsp;|&nbsp; 🏔️ $+150\text{ m}$ &nbsp;|&nbsp; ☀️ $+35^\circ\text{C}$</div>
       <div class="grid">
         <div class="lesson">
           <div class="icon">➕</div>
           <h3>Bilangan Positif</h3>
-          <p>Bilangan yang nilainya lebih besar dari nol (1, 2, 3, 4, ...). Menunjukkan suhu panas, ketinggian, atau maju.</p>
+          <p>Bilangan yang nilainya lebih besar dari nol ($1, 2, 3, 4, \dots$). Menunjukkan suhu panas, ketinggian, atau maju.</p>
         </div>
         <div class="lesson">
           <div class="icon">➖</div>
           <h3>Bilangan Negatif</h3>
-          <p>Bilangan yang nilainya lebih kecil dari nol (−1, −2, −3, ...). Menunjukkan suhu dingin, kedalaman, atau mundur.</p>
+          <p>Bilangan yang nilainya lebih kecil dari nol ($-1, -2, -3, \dots$). Menunjukkan suhu dingin, kedalaman, atau mundur.</p>
         </div>
         <div class="lesson">
           <div class="icon">0️⃣</div>
@@ -124,11 +139,11 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
       <span class="badge">MATERI 1</span>
       <h2>Mengenal Bilangan Bulat & Garis Bilangan</h2>
       <p>Bilangan bulat terdiri dari tiga kelompok utama: <b>bilangan bulat negatif</b>, <b>nol</b>, dan <b>bilangan bulat positif</b>.</p>
-      <div class="formula">…, −4, −3, −2, −1, 0, 1, 2, 3, 4, …</div>
+      <div class="formula">$$\dots, -4, -3, -2, -1, 0, 1, 2, 3, 4, \dots$$</div>
       <p><b>Prinsip Utama Garis Bilangan:</b></p>
       <ul>
-        <li><b>Bergerak ke kanan:</b> Nilai semakin besar (+).</li>
-        <li><b>Bergerak ke kiri:</b> Nilai semakin kecil (−).</li>
+        <li><b>Bergerak ke kanan:</b> Nilai semakin besar ($+$).</li>
+        <li><b>Bergerak ke kiri:</b> Nilai semakin kecil ($-$).</li>
         <li><b>Lawan bilangan:</b> Lawan dari $a$ adalah $-a$. Contoh: lawan dari $5$ adalah $-5$, lawan dari $-8$ adalah $8$.</li>
       </ul>
     </div>
@@ -141,19 +156,19 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
           <h3>🔎 Membandingkan</h3>
           <p>Gunakan simbol perbandingan:</p>
           <ul>
-            <li><b>&gt;</b> (lebih besar dari)</li>
-            <li><b>&lt;</b> (lebih kecil dari)</li>
-            <li><b>=</b> (sama dengan)</li>
+            <li><b>$a > b$</b> ($a$ lebih besar dari $b$)</li>
+            <li><b>$a < b$</b> ($a$ lebih kecil dari $b$)</li>
+            <li><b>$a = b$</b> ($a$ sama dengan $b$)</li>
           </ul>
-          <div class="formula" style="font-size:20px;">−5 &lt; 2 &nbsp;|&nbsp; −10 &lt; −3 &nbsp;|&nbsp; 4 &gt; −8</div>
+          <div class="formula" style="font-size:20px;">$$-5 < 2 \quad\vert{}\quad -10 < -3 \quad\vert{}\quad 4 > -8$$</div>
           <p><i>Catatan: Bilangan negatif dengan angka besar nilainya justru lebih kecil!</i></p>
         </div>
         <div class="lesson">
           <h3>📋 Mengurutkan</h3>
           <p>Urutan dari yang terkecil ke terbesar:</p>
-          <div class="formula" style="font-size:18px;">−8, −4, −1, 0, 3, 7</div>
+          <div class="formula" style="font-size:18px;">$$-8, -4, -1, 0, 3, 7$$</div>
           <p>Urutan dari yang terbesar ke terkecil:</p>
-          <div class="formula" style="font-size:18px;">7, 3, 0, −1, −4, −8</div>
+          <div class="formula" style="font-size:18px;">$$7, 3, 0, -1, -4, -8$$</div>
         </div>
       </div>
     </div>
@@ -167,7 +182,7 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
         <ul>
           <li>Positif + Positif = Positif (Contoh: $5 + 4 = 9$)</li>
           <li>Negatif + Negatif = Negatif (Contoh: $-3 + (-4) = -7$)</li>
-          <li>Tanda Berbeda: Cukai angka terbesar dikurangi angka terkecil, ikuti tanda angka terbesar! (Contoh: $-8 + 5 = -3$)</li>
+          <li>Tanda Berbeda: Angka terbesar dikurangi angka terkecil, ikuti tanda angka terbesar! (Contoh: $-8 + 5 = -3$)</li>
         </ul>
       </div>
       <div class="example">
@@ -184,8 +199,8 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
       <h2>Perkalian & Pembagian Bilangan Bulat</h2>
       <p>Aturan Tanda Operasi Perkalian dan Pembagian sangat mudah diingat:</p>
       <div class="formula">
-        Tanda Sama &rarr; Hasil POSITIF (+)<br>
-        Tanda Berbeda &rarr; Hasil NEGATIF (−)
+        Tanda Sama $\rightarrow$ Hasil POSITIF ($+$)<br>
+        Tanda Berbeda $\rightarrow$ Hasil NEGATIF ($-$)
       </div>
       <div class="grid">
         <div class="lesson">
@@ -209,7 +224,7 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
   <section id="simulasi">
     <div class="card">
       <h2>🧮 Interactive Simulator 1: Garis Bilangan Interaktif</h2>
-      <p>Pilih angka awal, operasi (+ atau −), dan nilai langkah di bawah untuk melihat animasi pergerakan di garis bilangan beserta penjelasan matematika secara otomatis!</p>
+      <p>Pilih angka awal, operasi ($+$ atau $-$), dan nilai langkah di bawah untuk melihat animasi pergerakan di garis bilangan beserta penjelasan matematika secara otomatis!</p>
       
       <div class="sim-grid">
         <div>
@@ -279,7 +294,7 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
           <div class="depth-visual-box" id="contextVisualBox">
             <div id="ctxTopLabel" style="font-weight:bold; font-size:15px;">Ketinggian Udara: +15 m</div>
             <div class="sea-level-line"></div>
-            <span class="sea-label">0 m (Permukaan Laut)</span>
+            <span class="sea-label">$0\text{ m}$ (Permukaan Laut)</span>
             <div id="ctxAvatar" class="diver-avatar" style="top: 60%;">🤿</div>
             <div id="ctxBottomLabel" style="font-weight:bold; font-size:15px; color:#e0f7fa;">Kedalaman Laut: -5 m</div>
           </div>
@@ -300,9 +315,9 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
         <b>Soal 1 (Suhu Udara):</b> Suhu udara di puncak gunung pada pagi hari adalah $-3^\circ\text{C}$. Menjelang siang, suhu naik sebesar $8^\circ\text{C}$. Berapakah suhu udara pada siang hari?
         <div class="steps">
 • Diketahui: Suhu awal = $-3^\circ\text{C}$, Kenaikan suhu = $+8^\circ\text{C}$<br>
-• Rumus: Suhu Akhir = Suhu Awal + Kenaikan<br>
+• Rumus: $\text{Suhu Akhir} = \text{Suhu Awal} + \text{Kenaikan}$<br>
 • Perhitungan: $-3 + 8 = \mathbf{5^\circ\text{C}}$<br>
-• Jadi, suhu udara pada siang hari adalah <b>5°C</b>.
+• Jadi, suhu udara pada siang hari adalah $5^\circ\text{C}$.
         </div>
       </div>
 
@@ -311,7 +326,7 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
         <div class="steps">
 • Diketahui: Posisi awal = $-12\text{ m}$, Naik = $+7\text{ m}$<br>
 • Perhitungan: $-12 + 7 = \mathbf{-5\text{ m}}$<br>
-• Jadi, ikan sekarang berada pada kedalaman <b>5 meter di bawah permukaan laut (-5 m)</b>.
+• Jadi, ikan sekarang berada pada kedalaman $5\text{ m}$ di bawah permukaan laut ($-5\text{ m}$).
         </div>
       </div>
 
@@ -321,7 +336,7 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
 • Kerjakan dari kiri ke kanan:<br>
 1. $(-15) + 8 = -7$<br>
 2. $-7 - (-6) = -7 + 6 = \mathbf{-1}$<br>
-• Hasil akhirnya adalah <b>-1</b>.
+• Hasil akhirnya adalah $-1$.
         </div>
       </div>
 
@@ -329,8 +344,8 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
         <b>Soal 4 (HOTS - Pergerakan Lift Gedung):</b> Sebuah lift berada di lantai $3$. Lift tersebut turun $5$ lantai, kemudian naik $8$ lantai. Di lantai berapakah lift tersebut berada sekarang?
         <div class="steps">
 • Posisi Awal = $+3$<br>
-• Turun 5 lantai = $-5$<br>
-• Naik 8 lantai = $+8$<br>
+• Turun $5$ lantai = $-5$<br>
+• Naik $8$ lantai = $+8$<br>
 • Perhitungan: $3 - 5 + 8 = (-2) + 8 = \mathbf{6}$<br>
 • Jadi, lift sekarang berada di <b>Lantai 6</b>.
         </div>
@@ -343,7 +358,7 @@ footer { text-align: center; padding: 25px; color: #54718a; font-size: 14px; }
 • Total kenaikan suhu = $5 \times 3^\circ\text{C} = 15^\circ\text{C}$<br>
 • Suhu akhir = Suhu awal + Total kenaikan<br>
 • Suhu akhir = $-4^\circ\text{C} + 15^\circ\text{C} = \mathbf{11^\circ\text{C}}$<br>
-• Jadi, suhu es batu setelah 10 menit adalah <b>11°C</b>.
+• Jadi, suhu es batu setelah $10$ menit adalah $11^\circ\text{C}$.
         </div>
       </div>
     </div>
@@ -375,6 +390,13 @@ function show(id, btn) {
     initNumlineAxis();
     updateNumlineSim();
     updateContextSim();
+  }
+}
+
+// Helper function to re-render MathJax dynamic content safely
+function renderMath() {
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise();
   }
 }
 
@@ -426,15 +448,16 @@ function updateNumlineSim() {
 
   const stepsHTML = `
 <b>Persamaan Matematika:</b><br>
-<span style="font-size:20px; font-weight:bold; color:var(--b);">${expressionStr} = ${result}</span><br><br>
+<span style="font-size:20px; font-weight:bold; color:var(--b);">$${expressionStr} = ${result}$</span><br><br>
 <b>Langkah Penjelasan:</b><br>
-1. Berdiri awal di titik <b>${start}</b> pada garis bilangan.<br>
-2. Operasi <b>${op === 'plus' ? 'Penjumlahan (+)' : 'Pengurangan (−)'}</b> dengan angka <b>${step}</b>.<br>
+1. Berdiri awal di titik <b>$${start}$</b> pada garis bilangan.<br>
+2. Operasi <b>${op === 'plus' ? 'Penjumlahan (+)' : 'Pengurangan (−)'}</b> dengan angka <b>$${step}$</b>.<br>
 3. Bergerak sejajar <b>${direction}</b>.<br>
-4. Berhenti di posisi akhir: <b style="color:var(--g); font-size:18px;">${result}</b>.
+4. Berhenti di posisi akhir: <b style="color:var(--g); font-size:18px;">$${result}$</b>.
   `;
 
   document.getElementById('numlineCalcResult').innerHTML = stepsHTML;
+  renderMath();
 }
 
 // ---------------------- SIMULATOR 2: CONTEXTUAL SIMULATOR ----------------------
@@ -456,7 +479,7 @@ function updateContextSim() {
     visualBox.style.background = 'linear-gradient(180deg, #b3e5fc 0%, #81d4fa 35%, #0288d1 70%, #01579b 100%)';
     avatar.innerText = '🤿';
     topLabel.innerText = '☁️ Udara di Atas Laut';
-    bottomLabel.innerText = `Kedalaman: ${finalVal} m`;
+    bottomLabel.innerHTML = `Kedalaman: $${finalVal}\\text{ m}$`;
 
     // Map -20m (bottom: 90%) to +20m (top: 10%)
     const clampedVal = Math.min(20, Math.max(-20, finalVal));
@@ -465,9 +488,9 @@ function updateContextSim() {
 
     const stepsHTML = `
 <b>Simulasi Kedalaman Laut:</b><br>
-• Posisi awal: <b>${start} m</b> ${start < 0 ? '(di bawah laut)' : '(di atas permukaan)'}<br>
-• Pergerakan: <b>${change > 0 ? 'Naik +' + change : 'Turun ' + change} m</b><br>
-• Posisi Akhir = ${start} + (${change}) = <b style="color:var(--b); font-size:18px;">${finalVal} m</b><br>
+• Posisi awal: <b>$${start}\\text{ m}$</b> ${start < 0 ? '(di bawah laut)' : '(di atas permukaan)'}<br>
+• Pergerakan: <b>${change > 0 ? 'Naik +$' + change + '$' : 'Turun $' + change + '$'} $\\text{m}$</b><br>
+• Posisi Akhir = $${start} + (${change}) =$ <b style="color:var(--b); font-size:18px;">$${finalVal}\\text{ m}$</b><br>
 <i>${finalVal < 0 ? `Artinya berada ${Math.abs(finalVal)} meter di bawah permukaan laut.` : finalVal > 0 ? `Artinya berada ${finalVal} meter di atas permukaan laut.` : 'Tepat berada di permukaan laut (0 m).'}</i>
     `;
     document.getElementById('contextCalcSteps').innerHTML = stepsHTML;
@@ -479,7 +502,7 @@ function updateContextSim() {
       : 'linear-gradient(180deg, #ffe0b2 0%, #ffb74d 50%, #f57c00 100%)';
     avatar.innerText = finalVal < 0 ? '❄️' : '☀️';
     topLabel.innerText = '🌡️ Pengukur Suhu Udara';
-    bottomLabel.innerText = `Suhu Akhir: ${finalVal} °C`;
+    bottomLabel.innerHTML = `Suhu Akhir: $${finalVal}^\\circ\\text{C}$`;
 
     const clampedVal = Math.min(20, Math.max(-20, finalVal));
     const topPct = 50 - (clampedVal / 20) * 40;
@@ -487,65 +510,66 @@ function updateContextSim() {
 
     const stepsHTML = `
 <b>Simulasi Suhu Udara:</b><br>
-• Suhu awal: <b>${start} °C</b><br>
-• Perubahan suhu: <b>${change > 0 ? 'Naik +' + change : 'Turun ' + change} °C</b><br>
-• Suhu Akhir = ${start} + (${change}) = <b style="color:var(--g); font-size:18px;">${finalVal} °C</b><br>
+• Suhu awal: <b>$${start}^\\circ\\text{C}$</b><br>
+• Perubahan suhu: <b>${change > 0 ? 'Naik +$' + change + '$' : 'Turun $' + change + '$'} $^\\circ\\text{C}$</b><br>
+• Suhu Akhir = $${start} + (${change}) =$ <b style="color:var(--g); font-size:18px;">$${finalVal}^\\circ\\text{C}$</b><br>
 <i>${finalVal < 0 ? 'Suhu di bawah 0°C (Sangat dingin / Membeku!)' : finalVal > 15 ? 'Suhu hangat / panas.' : 'Suhu sejuk.'}</i>
     `;
     document.getElementById('contextCalcSteps').innerHTML = stepsHTML;
   }
+  renderMath();
 }
 
 // ---------------------- QUIZ DATA & EVALUATION ----------------------
 const qs = [
   {
     q: "1. Pernyataan berikut yang bernilai BENAR tentang bilangan bulat adalah...",
-    o: ["-5 lebih besar dari 2", "-8 lebih kecil dari -3", "0 lebih kecil dari -10", "-2 sama dengan 2"],
+    o: ["$-5$ lebih besar dari $2$", "$-8$ lebih kecil dari $-3$", "$0$ lebih kecil dari $-10$", "$-2$ sama dengan $2$"],
     a: 1
   },
   {
-    q: "2. Hasil dari (-12) + 7 adalah...",
-    o: ["-19", "-5", "5", "19"],
+    q: "2. Hasil dari $(-12) + 7$ adalah...",
+    o: ["$-19$", "$-5$", "$5$", "$19$"],
     a: 1
   },
   {
-    q: "3. Hasil dari 8 - (-5) adalah...",
-    o: ["3", "-3", "13", "-13"],
+    q: "3. Hasil dari $8 - (-5)$ adalah...",
+    o: ["$3$", "$-3$", "$13$", "$-13$"],
     a: 2
   },
   {
     q: "4. Urutan bilangan bulat berikut dari yang TERKECIL ke TERBESAR adalah...",
-    o: ["-2, -6, 0, 4, 7", "-6, -2, 0, 4, 7", "7, 4, 0, -2, -6", "0, -2, -6, 4, 7"],
+    o: ["$-2, -6, 0, 4, 7$", "$-6, -2, 0, 4, 7$", "$7, 4, 0, -2, -6$", "$0, -2, -6, 4, 7$"],
     a: 1
   },
   {
-    q: "5. Hasil dari (-6) × (-4) adalah...",
-    o: ["-24", "-10", "10", "24"],
+    q: "5. Hasil dari $(-6) \\times (-4)$ adalah...",
+    o: ["$-24$", "$-10$", "$10$", "$24$"],
     a: 3
   },
   {
-    q: "6. Hasil dari (-35) ÷ 5 adalah...",
-    o: ["-7", "7", "-6", "6"],
+    q: "6. Hasil dari $(-35) \\div 5$ adalah...",
+    o: ["$-7$", "$7$", "$-6$", "$6$"],
     a: 0
   },
   {
-    q: "7. Suhu udara di dalam freezer mula-mula -4°C. Ketika listrik padam, suhu naik 9°C. Suhu freezer sekarang adalah...",
-    o: ["-13°C", "-5°C", "5°C", "13°C"],
+    q: "7. Suhu udara di dalam freezer mula-mula $-4^\\circ\\text{C}$. Ketika listrik padam, suhu naik $9^\\circ\\text{C}$. Suhu freezer sekarang adalah...",
+    o: ["$-13^\\circ\\text{C}$", "$-5^\\circ\\text{C}$", "$5^\\circ\\text{C}$", "$13^\\circ\\text{C}$"],
     a: 2
   },
   {
-    q: "8. Lawan dari bilangan -18 adalah...",
-    o: ["-18", "0", "18", "81"],
+    q: "8. Lawan dari bilangan $-18$ adalah...",
+    o: ["$-18$", "$0$", "$18$", "$81$"],
     a: 2
   },
   {
-    q: "9. Seekor penyelam berada di kedalaman 15 meter di bawah permukaan laut (-15 m). Penyelam tersebut naik 8 meter. Posisi penyelam sekarang adalah...",
-    o: ["-23 m", "-7 m", "7 m", "23 m"],
+    q: "9. Seekor penyelam berada di kedalaman $15\\text{ meter}$ di bawah permukaan laut ($-15\\text{ m}$). Penyelam tersebut naik $8\\text{ meter}$. Posisi penyelam sekarang adalah...",
+    o: ["$-23\\text{ m}$", "$-7\\text{ m}$", "$7\\text{ m}$", "$23\\text{ m}$"],
     a: 1
   },
   {
-    q: "10. Hasil dari (-4) × 3 + 10 adalah...",
-    o: ["-22", "-2", "2", "22"],
+    q: "10. Hasil dari $(-4) \\times 3 + 10$ adalah...",
+    o: ["$-22$", "$-2$", "$2$", "$22$"],
     a: 1
   }
 ];
@@ -589,6 +613,7 @@ window.onload = function() {
   initNumlineAxis();
   updateNumlineSim();
   updateContextSim();
+  renderMath();
 };
 </script>
 </body>
